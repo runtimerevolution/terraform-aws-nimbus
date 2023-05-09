@@ -1,5 +1,3 @@
 module "example_aws" {
-    source = "../.."
-
-    enable_aws = true
+    source = "../../modules/aws"
 }
