@@ -1,5 +1,5 @@
-module "example" {
-    source = "../"
+module "example_docker" {
+    source = "../.."
 
     enable_docker = true
     docker_image_name = "wordpress:latest"
