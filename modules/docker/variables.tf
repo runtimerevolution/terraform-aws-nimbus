@@ -1,9 +1,9 @@
-variable "image_name" {
+variable "docker_image_name" {
   type        = string
   default     = "nginx"
 }
 
-variable "container_name" {
+variable "docker_container_name" {
   type        = string
   default     = "nginx"
 }

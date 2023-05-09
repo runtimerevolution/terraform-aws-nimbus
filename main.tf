@@ -3,6 +3,6 @@ module "docker" {
 
   source = "./modules/docker"
 
-  image_name = var.image_name
-  container_name = var.container_name
+  docker_image_name = var.docker_image_name
+  docker_container_name = var.docker_container_name
 }
