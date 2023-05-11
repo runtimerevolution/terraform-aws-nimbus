@@ -1,11 +1,7 @@
 # S3 bucket
 resource "aws_s3_bucket" "b" {
-  bucket = "thereisnowaythisbucketalreadyexists"
+  bucket = var.aws_s3_bucket_name
   force_destroy = true
-  tags = {
-    Name        = "My bucket"
-    Environment = "development"
-  }
 }
 
 resource "aws_s3_bucket_ownership_controls" "b_ownership_controls" {
@@ -50,7 +46,7 @@ resource "aws_s3_bucket_policy" "b_policy" {
         "Effect": "Allow",
         "Principal": "*",
         "Action": ["s3:GetObject"],
-        "Resource": "arn:aws:s3:::thereisnowaythisbucketalreadyexists/*"
+        "Resource": "arn:aws:s3:::${var.aws_s3_bucket_name}/*"
       }
     ]
 }
@@ -58,28 +54,15 @@ EOF
 }
 
 # Cloudfront
-locals {
-  s3_origin_id = "s3-my-webapp.example.com"
-}
-
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {
-  comment = "s3-my-webapp.example.com"
-}
-
 resource "aws_cloudfront_distribution" "s3_distribution" {
   origin {
     domain_name = aws_s3_bucket.b.bucket_regional_domain_name
-    origin_id   = local.s3_origin_id
-
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
-    }
+    origin_id   = var.aws_cloudfront_origin_id
   }
 
   enabled             = true
   is_ipv6_enabled     = true
-  comment             = "my-cloudfront"
-  default_root_object = "website/index.html"
+  default_root_object = var.aws_cloudfront_default_root_object
 
   logging_config {
    include_cookies = false
@@ -92,7 +75,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = local.s3_origin_id
+    target_origin_id = var.aws_cloudfront_origin_id
 
     forwarded_values {
       query_string = false
@@ -108,18 +91,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
     max_ttl                = 86400
   }
 
-  price_class = "PriceClass_200"
+  price_class = var.aws_cloudfront_price_class
 
   restrictions {
     geo_restriction {
       restriction_type = "none"
       locations        = []
     }
-  }
-
-  tags = {
-    Environment = "development"
-    Name        = "my-tag"
   }
 
   viewer_certificate {
