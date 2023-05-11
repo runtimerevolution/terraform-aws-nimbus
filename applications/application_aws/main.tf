@@ -1,12 +1,16 @@
-provider "aws" {
-  region = "eu-north-1"
+locals {
+  aws_provider_region = "eu-north-1"
 }
 
-module "example_aws" {
+provider "aws" {
+  region = local.aws_provider_region
+}
+
+module "application_aws" {
   source = "../../modules/aws"
 
   # Provider
-  aws_provider_region = "eu-north-1"
+  aws_provider_region = local.aws_provider_region
 
   # AMI
   aws_ami_name = "ubuntu/images/hvm-ssd/ubuntu-focal-20.04-amd64-server-*"
@@ -38,7 +42,7 @@ JSON
 resource "aws_s3_object" "website" {
   for_each = fileset("../../website/", "*")
 
-  bucket = module.example_aws.s3_static_website_bucket
+  bucket = module.application_aws.s3_static_website_bucket
   key    = "website/${each.value}"
   source = "../../website/${each.value}"
   content_type = "text/html"

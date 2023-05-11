@@ -81,13 +81,13 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
   comment             = "my-cloudfront"
   default_root_object = "website/index.html"
 
-  #logging_config {
-  #  include_cookies = false
-  #  bucket          = "mylogs.s3.amazonaws.com"
-  #  prefix          = "myprefix"
-  #}
+  logging_config {
+   include_cookies = false
+   bucket          = aws_s3_bucket.b.bucket_domain_name
+   prefix          = "logs/"
+  }
 
-  #aliases = ["mywebsite.example.com", "s3-static-web-dev.example.com"]
+  aliases = []
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
