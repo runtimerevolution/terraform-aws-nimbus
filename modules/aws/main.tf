@@ -1,16 +1,23 @@
-resource "aws_resourcegroups_group" "resource_group" {
-  name = var.aws_resource_group_name
+# S3 bucket
+resource "aws_s3_bucket" "b" {
+  bucket = "thereisnowaythisbucketalreadyexists"
 
-  resource_query {
-    query = var.aws_resource_group_query
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
   }
 }
 
-resource "aws_instance" "instance" {
-  ami           = data.aws_ami.ami.id
-  instance_type = var.aws_instance_type
-
-  tags = {
-    Name = var.aws_instance_name
+resource "aws_s3_bucket_ownership_controls" "b_ownership_controls" {
+  bucket = aws_s3_bucket.b.id
+  rule {
+    object_ownership = "BucketOwnerPreferred"
   }
+}
+
+resource "aws_s3_bucket_acl" "b_acl" {
+  depends_on = [aws_s3_bucket_ownership_controls.b_ownership_controls]
+
+  bucket = aws_s3_bucket.b.id
+  acl    = "private"
 }
