@@ -1,18 +1,18 @@
 # S3 bucket
-resource "aws_s3_bucket" "b" {
+resource "aws_s3_bucket" "s3_bucket" {
   bucket = var.aws_s3_bucket_name
   force_destroy = true
 }
 
-resource "aws_s3_bucket_ownership_controls" "b_ownership_controls" {
-  bucket = aws_s3_bucket.b.id
+resource "aws_s3_bucket_ownership_controls" "s3_bucket_ownership_controls" {
+  bucket = aws_s3_bucket.s3_bucket.id
   rule {
     object_ownership = "BucketOwnerPreferred"
   }
 }
 
-resource "aws_s3_bucket_public_access_block" "b_public_access_block" {
-  bucket = aws_s3_bucket.b.id
+resource "aws_s3_bucket_public_access_block" "s3_bucket_public_access_block" {
+  bucket = aws_s3_bucket.s3_bucket.id
 
   block_public_acls       = false
   block_public_policy     = false
@@ -21,23 +21,23 @@ resource "aws_s3_bucket_public_access_block" "b_public_access_block" {
 }
 
 
-resource "aws_s3_bucket_acl" "b_acl" {
+resource "aws_s3_bucket_acl" "s3_bucket_acl" {
   depends_on = [
-    aws_s3_bucket_ownership_controls.b_ownership_controls,
-    aws_s3_bucket_public_access_block.b_public_access_block
+    aws_s3_bucket_ownership_controls.s3_bucket_ownership_controls,
+    aws_s3_bucket_public_access_block.s3_bucket_public_access_block
   ]
 
-  bucket = aws_s3_bucket.b.id
+  bucket = aws_s3_bucket.s3_bucket.id
   acl    = "public-read"
 
 }
 
-resource "aws_s3_bucket_policy" "b_policy" {
+resource "aws_s3_bucket_policy" "s3_bucket_policy" {
   depends_on = [
-    aws_s3_bucket_public_access_block.b_public_access_block
+    aws_s3_bucket_public_access_block.s3_bucket_public_access_block
   ]
 
-  bucket = aws_s3_bucket.b.id
+  bucket = aws_s3_bucket.s3_bucket.id
   policy = <<EOF
 {
  "Version": "2012-10-17",
@@ -54,9 +54,9 @@ EOF
 }
 
 # Cloudfront
-resource "aws_cloudfront_distribution" "s3_distribution" {
+resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   origin {
-    domain_name = aws_s3_bucket.b.bucket_regional_domain_name
+    domain_name = aws_s3_bucket.s3_bucket.bucket_regional_domain_name
     origin_id   = var.aws_cloudfront_origin_id
   }
 
@@ -66,7 +66,7 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 
   logging_config {
    include_cookies = false
-   bucket          = aws_s3_bucket.b.bucket_domain_name
+   bucket          = aws_s3_bucket.s3_bucket.bucket_domain_name
    prefix          = "logs/"
   }
 
