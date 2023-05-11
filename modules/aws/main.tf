@@ -1,7 +1,7 @@
 # S3 bucket
 resource "aws_s3_bucket" "b" {
   bucket = "thereisnowaythisbucketalreadyexists"
-
+  force_destroy = true
   tags = {
     Name        = "My bucket"
     Environment = "development"
@@ -55,18 +55,6 @@ resource "aws_s3_bucket_policy" "b_policy" {
     ]
 }
 EOF
-}
-
-resource "aws_s3_bucket_website_configuration" "b_website" {
-  bucket = aws_s3_bucket.b.id
-
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
 }
 
 # Cloudfront

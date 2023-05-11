@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "eu-north-1"
+}
+
 module "example_aws" {
   source = "../../modules/aws"
 
@@ -28,4 +32,15 @@ JSON
   # Instance
   aws_instance_type = "t3.micro"
   aws_instance_name = "ExampleAppServerInstance"
+}
+
+# Deploy static website
+resource "aws_s3_object" "website" {
+  for_each = fileset("../../website/", "*")
+
+  bucket = module.example_aws.s3_static_website_bucket
+  key    = "website/${each.value}"
+  source = "../../website/${each.value}"
+  content_type = "text/html"
+  etag   = filemd5("../../website/${each.value}")
 }
