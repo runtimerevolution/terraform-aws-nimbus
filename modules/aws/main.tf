@@ -36,7 +36,7 @@ resource "aws_s3_bucket_acl" "s3_bucket_acl" {
 
 resource "aws_s3_bucket_policy" "s3_bucket_policy" {
   bucket = aws_s3_bucket.s3_bucket.id
-  policy = data.aws_iam_policy_document.s3_bucket_policy.json
+  policy = data.aws_iam_policy_document.s3_bucket_policy_document.json
 }
 
 # Cloudfront
