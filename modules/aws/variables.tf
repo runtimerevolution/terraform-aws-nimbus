@@ -1,3 +1,8 @@
+variable "solution_name" {
+  type    = string
+  default = "default"
+}
+
 variable "aws_provider_region" {
   type    = string
   default = "us-east-1"

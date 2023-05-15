@@ -9,3 +9,7 @@ data "aws_iam_policy_document" "s3_bucket_policy_document" {
     }
   }
 }
+
+data "aws_availability_zones" "available_zones" {
+  state = "available"
+}

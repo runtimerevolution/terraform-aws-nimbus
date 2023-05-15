@@ -9,7 +9,7 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  # Provider
+  solution_name = "kyoto"
   aws_provider_region = local.aws_provider_region
 }
 
