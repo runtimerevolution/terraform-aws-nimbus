@@ -27,6 +27,16 @@ variable "vpc_cidr_block" {
   default = "10.32.0.0/16"
 }
 
+variable "load_balancer_from_port" {
+  type = number
+  default = 80
+}
+
+variable "load_balancer_to_port" {
+  type = number
+  default = 80
+}
+
 variable "containers" {
   type    = any
   default = {}

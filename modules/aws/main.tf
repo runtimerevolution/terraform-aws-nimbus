@@ -10,7 +10,30 @@ module "static_website" {
 module "network" {
   source = "./modules/network"
 
-  solution_name = var.solution_name
+  solution_name  = var.solution_name
   vpc_cidr_block = var.vpc_cidr_block
-  containers = var.containers
+}
+
+
+module "load_balancer" {
+  source = "./modules/load_balancer"
+
+  solution_name = var.solution_name
+  vpc_id        = module.network.vpc_id
+  from_port     = 80
+  to_port       = 3000
+  subnets_ids   = module.network.public_subnets_ids
+}
+
+module "ecs" {
+  count = length(keys(var.containers)) > 0 ? 1 : 0
+
+  source = "./modules/ecs"
+
+  solution_name                   = var.solution_name
+  vpc_id                          = module.network.vpc_id
+  load_balancer_id                = module.load_balancer.load_balancer_id
+  load_balancer_security_group_id = module.load_balancer.load_balancer_security_group_id
+  subnets_ids                     = module.network.private_subnets_ids
+  containers                      = var.containers
 }

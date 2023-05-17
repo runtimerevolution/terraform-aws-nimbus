@@ -7,7 +7,7 @@ resource "aws_lb_target_group" "target_group" {
 }
 
 resource "aws_lb_listener" "listener" {
-  load_balancer_arn = var.lb_id
+  load_balancer_arn = var.load_balancer_id
   port              = var.port
   protocol          = "HTTP"
 

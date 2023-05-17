@@ -4,7 +4,7 @@ module "lb_listener" {
   solution_name = var.solution_name
   vpc_id = var.vpc_id
   port = var.container_port
-  lb_id = var.lb_id
+  load_balancer_id = var.load_balancer_id
 }
 
 resource "aws_ecs_task_definition" "task_definition" {
@@ -40,7 +40,7 @@ resource "aws_security_group" "group" {
     protocol        = "tcp"
     from_port       = var.container_port
     to_port         = var.container_port
-    security_groups = [var.lb_security_group_id]
+    security_groups = [var.load_balancer_security_group_id]
   }
 
   egress {

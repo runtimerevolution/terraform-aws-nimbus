@@ -61,26 +61,3 @@ resource "aws_route_table_association" "private" {
   subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
-
-module "load_balancer" {
-  source = "../load_balancer"
-
-  solution_name = var.solution_name
-  vpc_id        = aws_vpc.vpc.id
-  from_port     = 80
-  to_port       = 3000
-  subnets_ids   = aws_subnet.public.*.id
-}
-
-module "ecs_cluster" {
-  count = length(keys(var.containers)) > 0 ? 1 : 0
-
-  source = "../ecs_cluster"
-
-  solution_name        = var.solution_name
-  vpc_id               = aws_vpc.vpc.id
-  lb_id                = module.load_balancer.lb_id
-  lb_security_group_id = module.load_balancer.lb_security_group_id
-  subnets_ids          = aws_subnet.public.*.id
-  containers           = var.containers
-}
