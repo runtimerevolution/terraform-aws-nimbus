@@ -19,6 +19,6 @@ resource "aws_security_group" "security_group" {
 
 resource "aws_lb" "lb" {
   name            = "${var.solution_name}-lb"
-  subnets         = var.subnet_ids
+  subnets         = var.subnets_ids
   security_groups = [aws_security_group.security_group.id]
 }

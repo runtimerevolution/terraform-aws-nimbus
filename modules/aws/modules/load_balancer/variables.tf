@@ -15,6 +15,6 @@ variable "to_port" {
   type = number
 }
 
-variable "subnet_ids" {
+variable "subnets_ids" {
   type = list(string)
 }

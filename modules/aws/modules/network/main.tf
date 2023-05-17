@@ -1,6 +1,6 @@
 # VPC
 resource "aws_vpc" "vpc" {
-  cidr_block = var.aws_vpc_cidr_block
+  cidr_block = var.vpc_cidr_block
 }
 
 # Subnets
@@ -19,7 +19,7 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.vpc.id
 }
 
-# Networking resources
+# Resources
 resource "aws_internet_gateway" "gateway" {
   vpc_id = aws_vpc.vpc.id
 }
@@ -59,10 +59,21 @@ resource "aws_route_table_association" "private" {
 }
 
 module "load_balancer" {
-  source = "./modules/load_balancer"
+  source = "../load_balancer"
 
-  vpc_id     = aws_vpc.vpc.id
-  from_port  = 80
-  to_port    = 3000
-  subnet_ids = aws_subnet.public.*.id
+  vpc_id      = aws_vpc.vpc.id
+  from_port   = 80
+  to_port     = 3000
+  subnets_ids = aws_subnet.public.*.id
+}
+
+module "ecs_cluster" {
+  source = "../ecs_cluster"
+
+  solution_name        = var.solution_name
+  vpc_id               = aws_vpc.vpc.id
+  lb_id                = module.load_balancer.lb_id
+  lb_security_group_id = module.load_balancer.lb_security_group_id
+  subnets_ids          = aws_subnet.public.*.id
+  containers           = var.containers
 }

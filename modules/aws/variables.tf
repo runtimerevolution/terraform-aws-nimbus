@@ -21,3 +21,13 @@ variable "cloudfront_price_class" {
   type    = string
   default = "PriceClass_100"
 }
+
+variable "vpc_cidr_block" {
+  type    = string
+  default = "10.32.0.0/16"
+}
+
+variable "containers" {
+  type    = any
+  default = {}
+}

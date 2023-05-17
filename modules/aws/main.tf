@@ -6,3 +6,10 @@ module "static_website" {
   cloudfront_origin_id           = var.cloudfront_origin_id
   cloudfront_price_class         = var.cloudfront_price_class
 }
+
+module "network" {
+  source = "./modules/network"
+
+  solution_name = var.solution_name
+  vpc_cidr_block = var.vpc_cidr_block
+}
