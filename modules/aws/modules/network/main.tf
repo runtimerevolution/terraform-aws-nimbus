@@ -65,10 +65,11 @@ resource "aws_route_table_association" "private" {
 module "load_balancer" {
   source = "../load_balancer"
 
-  vpc_id      = aws_vpc.vpc.id
-  from_port   = 80
-  to_port     = 3000
-  subnets_ids = aws_subnet.public.*.id
+  solution_name = var.solution_name
+  vpc_id        = aws_vpc.vpc.id
+  from_port     = 80
+  to_port       = 3000
+  subnets_ids   = aws_subnet.public.*.id
 }
 
 module "ecs_cluster" {
