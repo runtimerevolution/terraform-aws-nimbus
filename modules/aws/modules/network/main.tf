@@ -73,6 +73,8 @@ module "load_balancer" {
 }
 
 module "ecs_cluster" {
+  count = length(keys(var.containers)) > 0 ? 1 : 0
+
   source = "../ecs_cluster"
 
   solution_name        = var.solution_name

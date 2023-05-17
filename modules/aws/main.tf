@@ -12,4 +12,5 @@ module "network" {
 
   solution_name = var.solution_name
   vpc_cidr_block = var.vpc_cidr_block
+  containers = var.containers
 }

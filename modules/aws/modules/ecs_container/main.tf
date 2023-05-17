@@ -8,7 +8,7 @@ module "lb_listener" {
 }
 
 resource "aws_ecs_task_definition" "task_definition" {
-  family                   = var.solution_name
+  family                   = "${var.solution_name}-${var.container_name}-task"
   network_mode             = "awsvpc"
   requires_compatibilities = ["FARGATE"]
   cpu                      = var.container_cpu

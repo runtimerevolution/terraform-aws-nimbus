@@ -8,5 +8,4 @@ variable "vpc_cidr_block" {
 
 variable "containers" {
   type    = any
-  default = {}
 }
