@@ -1,5 +1,19 @@
 locals {
   aws_provider_region = "eu-north-1"
+  containers = {
+    "hello-world" : {
+      container_image  = "registry.gitlab.com/architect-io/artifacts/nodejs-hello-world:latest"
+      container_cpu    = 1024
+      container_memory = 2048
+      container_port   = 3000
+    },
+    "nginx" : {
+      container_image  = "nginx:latest"
+      container_cpu    = 1024
+      container_memory = 2048
+      container_port   = 80
+    }
+  }
 }
 
 provider "aws" {
@@ -9,17 +23,18 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  solution_name = "kyoto"
+  solution_name       = "kyoto"
   aws_provider_region = local.aws_provider_region
+  containers = local.containers
 }
 
 # Deploy static website
 resource "aws_s3_object" "website" {
   for_each = fileset("../../website/", "*")
 
-  bucket = module.application_aws.s3_static_website_bucket
-  key    = "website/${each.value}"
-  source = "../../website/${each.value}"
+  bucket       = module.application_aws.s3_static_website_bucket
+  key          = "website/${each.value}"
+  source       = "../../website/${each.value}"
   content_type = "text/html"
-  etag   = filemd5("../../website/${each.value}")
+  etag         = filemd5("../../website/${each.value}")
 }
