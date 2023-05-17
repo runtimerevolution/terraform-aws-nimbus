@@ -27,6 +27,16 @@ variable "vpc_cidr_block" {
   default = "10.32.0.0/16"
 }
 
+variable "public_subnets_count" {
+  type = number
+  default = 2
+}
+
+variable "private_subnets_count" {
+  type = number
+  default = 2
+}
+
 variable "load_balancer_from_port" {
   type = number
   default = 80

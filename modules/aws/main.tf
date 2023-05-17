@@ -10,18 +10,19 @@ module "static_website" {
 module "network" {
   source = "./modules/network"
 
-  solution_name  = var.solution_name
-  vpc_cidr_block = var.vpc_cidr_block
+  solution_name         = var.solution_name
+  vpc_cidr_block        = var.vpc_cidr_block
+  public_subnets_count  = var.public_subnets_count
+  private_subnets_count = var.private_subnets_count
 }
-
 
 module "load_balancer" {
   source = "./modules/load_balancer"
 
   solution_name = var.solution_name
   vpc_id        = module.network.vpc_id
-  from_port     = 80
-  to_port       = 3000
+  from_port     = var.load_balancer_from_port
+  to_port       = var.load_balancer_to_port
   subnets_ids   = module.network.public_subnets_ids
 }
 

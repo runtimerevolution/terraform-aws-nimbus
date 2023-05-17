@@ -5,3 +5,11 @@ variable "solution_name" {
 variable "vpc_cidr_block" {
   type = string
 }
+
+variable "public_subnets_count" {
+  type = number
+}
+
+variable "private_subnets_count" {
+  type = number
+}
