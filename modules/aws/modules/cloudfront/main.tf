@@ -62,4 +62,6 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
+  depends_on = [static_website_bucket]
 }
