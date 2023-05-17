@@ -1,7 +1,7 @@
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
 
 module "static_website_bucket" {
-  source = "../bucket"
+  source = "../s3_bucket"
 
   bucket_name        = "${var.solution_name}-static-website"
   bucket_policy_json = data.aws_iam_policy_document.bucket_policy_document.json
@@ -62,4 +62,6 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   viewer_certificate {
     cloudfront_default_certificate = true
   }
+
+  depends_on = [module.static_website_bucket]
 }
