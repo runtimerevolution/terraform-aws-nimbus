@@ -24,7 +24,7 @@ module "application_aws" {
   source = "../../modules/aws"
 
   solution_name   = "kyoto"
-  provider_region = local.aws_provider_region
+  provider_region = local.provider_region
   containers      = local.containers
 }
 

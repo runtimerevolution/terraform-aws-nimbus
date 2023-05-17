@@ -10,8 +10,8 @@ module "container" {
   solution_name        = var.solution_name
   vpc_id               = aws_vpc.vpc.id
   cluster_id           = aws_ecs_cluster.cluster.id
-  lb_id                = aws_lb.lb.id
-  lb_security_group_id = aws_security_group.lb.id
+  lb_id                = module.load_balancer.lb_id
+  lb_security_group_id = module.load_balancer.lb_security_group_id
   subnet_ids           = aws_subnet.private.*.id
 
   container_name   = each.key

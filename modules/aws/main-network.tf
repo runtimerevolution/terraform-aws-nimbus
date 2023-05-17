@@ -47,7 +47,7 @@ resource "aws_route_table" "private" {
   vpc_id = aws_vpc.vpc.id
 
   route {
-    cidr_block = "0.0.0.0/0"
+    cidr_block     = "0.0.0.0/0"
     nat_gateway_id = element(aws_nat_gateway.gateway.*.id, count.index)
   }
 }
@@ -58,28 +58,11 @@ resource "aws_route_table_association" "private" {
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
 
-# Load balancer
-resource "aws_security_group" "lb" {
-  name        = "${var.solution_name}-lb-security-group"
-  vpc_id      = aws_vpc.vpc.id
+module "load_balancer" {
+  source = "./modules/load_balancer"
 
-  ingress {
-    protocol    = "tcp"
-    from_port   = 80
-    to_port     = 3000
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  egress {
-    from_port = 0
-    to_port   = 0
-    protocol  = "-1"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-}
-
-resource "aws_lb" "lb" {
-  name            = "${var.solution_name}-lb"
-  subnets         = aws_subnet.public.*.id
-  security_groups = [aws_security_group.lb.id]
+  vpc_id     = aws_vpc.vpc.id
+  from_port  = 80
+  to_port    = 3000
+  subnet_ids = aws_subnet.public.*.id
 }
