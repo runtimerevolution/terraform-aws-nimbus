@@ -19,6 +19,8 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     }
   }
 
+  aliases = [var.domain, "www.${var.domain}"]
+
   enabled             = true
   is_ipv6_enabled     = true
   default_root_object = var.cloudfront_default_root_object
@@ -28,8 +30,6 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     bucket          = module.static_website_bucket.bucket.bucket_domain_name
     prefix          = "logs/"
   }
-
-  aliases = []
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
@@ -60,7 +60,8 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   }
 
   viewer_certificate {
-    cloudfront_default_certificate = true
+    acm_certificate_arn = var.acm_certificate_arn
+    ssl_support_method  = "sni-only"
   }
 
   depends_on = [module.static_website_bucket]

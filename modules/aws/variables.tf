@@ -2,6 +2,10 @@ variable "solution_name" {
   type = string
 }
 
+variable "domain" {
+  type = string
+}
+
 variable "provider_region" {
   type    = string
   default = "us-east-1"
@@ -28,22 +32,22 @@ variable "vpc_cidr_block" {
 }
 
 variable "public_subnets_count" {
-  type = number
+  type    = number
   default = 2
 }
 
 variable "private_subnets_count" {
-  type = number
+  type    = number
   default = 2
 }
 
 variable "load_balancer_from_port" {
-  type = number
+  type    = number
   default = 80
 }
 
 variable "load_balancer_to_port" {
-  type = number
+  type    = number
   default = 80
 }
 
