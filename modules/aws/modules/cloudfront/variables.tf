@@ -21,3 +21,7 @@ variable "cloudfront_price_class" {
 variable "acm_certificate_arn" {
   type = string
 }
+
+variable "route53_zone_id" {
+  type = string
+}
