@@ -19,5 +19,5 @@ variable "subnets_ids" {
 }
 
 variable "containers" {
-  type    = any
+  type = any
 }
