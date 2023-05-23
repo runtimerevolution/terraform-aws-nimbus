@@ -37,4 +37,5 @@ module "ecs" {
   load_balancer_security_group_id = module.load_balancer.load_balancer_security_group_id
   subnets_ids                     = module.network.private_subnets_ids
   containers                      = var.containers
+  ecs_launch_type                 = var.ecs_launch_type
 }

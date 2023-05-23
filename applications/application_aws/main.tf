@@ -28,6 +28,7 @@ module "application_aws" {
   load_balancer_from_port = 80
   load_balancer_to_port   = 3000
   containers              = local.containers
+  ecs_launch_type         = "EC2"
 }
 
 # Deploy static website

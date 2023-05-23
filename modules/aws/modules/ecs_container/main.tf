@@ -10,8 +10,7 @@ module "lb_listener" {
 resource "aws_ecs_task_definition" "task_definition" {
   family                   = "${var.solution_name}-${var.container_name}-task"
   network_mode             = "awsvpc"
-  # requires_compatibilities = ["FARGATE"]
-  requires_compatibilities = ["EC2"]
+  requires_compatibilities = [var.launch_type]
   cpu                      = var.container_cpu
   memory                   = var.container_memory
   container_definitions    = <<DEFINITION
@@ -57,8 +56,7 @@ resource "aws_ecs_service" "service" {
   cluster         = var.cluster_id
   task_definition = aws_ecs_task_definition.task_definition.arn
   desired_count   = 1
-  # launch_type     = "FARGATE"
-  launch_type     = "EC2"
+  launch_type     = var.launch_type
 
   network_configuration {
     security_groups = [aws_security_group.group.id]

@@ -51,3 +51,8 @@ variable "containers" {
   type    = any
   default = {}
 }
+
+variable "ecs_launch_type" {
+  type = string
+  default = "FARGATE"
+}

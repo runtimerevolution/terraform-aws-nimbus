@@ -21,3 +21,7 @@ variable "subnets_ids" {
 variable "containers" {
   type = any
 }
+
+variable "ecs_launch_type" {
+  type = string
+}

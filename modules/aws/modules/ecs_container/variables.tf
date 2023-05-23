@@ -23,6 +23,10 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "launch_type" {
+  type = string
+}
+
 variable "container_name" {
   type = string
 }
