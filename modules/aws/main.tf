@@ -1,16 +1,8 @@
-resource "aws_resourcegroups_group" "resource_group" {
-  name = var.aws_resource_group_name
+module "static_website" {
+  source = "./modules/cloudfront"
 
-  resource_query {
-    query = var.aws_resource_group_query
-  }
-}
-
-resource "aws_instance" "instance" {
-  ami           = data.aws_ami.ami.id
-  instance_type = var.aws_instance_type
-
-  tags = {
-    Name = var.aws_instance_name
-  }
+  solution_name                  = var.solution_name
+  cloudfront_default_root_object = var.cloudfront_default_root_object
+  cloudfront_origin_id           = var.cloudfront_origin_id
+  cloudfront_price_class         = var.cloudfront_price_class
 }
