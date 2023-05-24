@@ -32,6 +32,7 @@ module "ecs_container" {
   launch_type       = var.ecs_launch_type
 
   container_name   = each.key
+  instance_count   = each.value.instance_count
   container_image  = each.value.container_image
   container_cpu    = each.value.container_cpu
   container_memory = each.value.container_memory

@@ -6,12 +6,14 @@ locals {
       container_cpu    = 1024
       container_memory = 2048
       container_port   = 3000
+      instance_count   = 2
     },
     "nginx" : {
       container_image  = "nginx:latest"
       container_cpu    = 1024
       container_memory = 2048
       container_port   = 80
+      instance_count   = 2
     }
   }
 }

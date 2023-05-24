@@ -1,9 +1,9 @@
 module "lb_listener" {
   source = "../load_balancer_listener"
 
-  solution_name = var.solution_name
-  vpc_id = var.vpc_id
-  port = var.container_port
+  solution_name    = var.solution_name
+  vpc_id           = var.vpc_id
+  port             = var.container_port
   load_balancer_id = var.load_balancer_id
 }
 
@@ -59,8 +59,8 @@ resource "aws_ecs_service" "service" {
   name            = "${var.solution_name}-${var.container_name}-service"
   cluster         = var.cluster_id
   task_definition = aws_ecs_task_definition.task_definition.arn
-  desired_count   = 1
-  launch_type     = var.launch_type
+  desired_count   = var.instance_count
+  launch_type     = "FARGATE"
 
   network_configuration {
     security_groups = [aws_security_group.group.id]

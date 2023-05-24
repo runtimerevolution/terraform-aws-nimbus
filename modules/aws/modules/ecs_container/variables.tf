@@ -27,6 +27,10 @@ variable "launch_type" {
   type = string
 }
 
+variable "instance_count" {
+  type = number
+}
+
 variable "container_name" {
   type = string
 }
