@@ -14,16 +14,17 @@ module "network" {
   vpc_cidr_block        = var.vpc_cidr_block
   public_subnets_count  = var.public_subnets_count
   private_subnets_count = var.private_subnets_count
+  from_port             = var.from_port
+  to_port               = var.to_port
 }
 
 module "load_balancer" {
   source = "./modules/load_balancer"
 
-  solution_name = var.solution_name
-  vpc_id        = module.network.vpc_id
-  from_port     = var.load_balancer_from_port
-  to_port       = var.load_balancer_to_port
-  subnets_ids   = module.network.public_subnets_ids
+  solution_name     = var.solution_name
+  vpc_id            = module.network.vpc_id
+  security_group_id = module.network.security_group_id
+  subnets_ids       = module.network.public_subnets_ids
 }
 
 module "ecs" {
@@ -31,11 +32,11 @@ module "ecs" {
 
   source = "./modules/ecs"
 
-  solution_name                   = var.solution_name
-  vpc_id                          = module.network.vpc_id
-  load_balancer_id                = module.load_balancer.load_balancer_id
-  load_balancer_security_group_id = module.load_balancer.load_balancer_security_group_id
-  subnets_ids                     = module.network.private_subnets_ids
-  containers                      = var.containers
-  ecs_launch_type                 = var.ecs_launch_type
+  solution_name     = var.solution_name
+  vpc_id            = module.network.vpc_id
+  load_balancer_id  = module.load_balancer.load_balancer_id
+  security_group_id = module.network.security_group_id
+  subnets_ids       = module.network.private_subnets_ids
+  containers        = var.containers
+  ecs_launch_type   = var.ecs_launch_type
 }

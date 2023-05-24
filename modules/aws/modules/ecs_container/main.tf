@@ -40,7 +40,7 @@ resource "aws_security_group" "group" {
     protocol        = "tcp"
     from_port       = var.container_port
     to_port         = var.container_port
-    security_groups = [var.load_balancer_security_group_id]
+    security_groups = [var.security_group_id]
   }
 
   egress {

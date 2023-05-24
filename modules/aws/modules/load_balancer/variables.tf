@@ -6,12 +6,8 @@ variable "vpc_id" {
   type = string
 }
 
-variable "from_port" {
-  type = number
-}
-
-variable "to_port" {
-  type = number
+variable "security_group_id" {
+  type = string
 }
 
 variable "subnets_ids" {

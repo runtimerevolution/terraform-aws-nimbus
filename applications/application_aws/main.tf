@@ -23,12 +23,12 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  solution_name           = "kyoto"
-  provider_region         = local.provider_region
-  load_balancer_from_port = 80
-  load_balancer_to_port   = 3000
-  containers              = local.containers
-  ecs_launch_type         = "EC2"
+  solution_name   = "kyoto"
+  provider_region = local.provider_region
+  from_port       = 80
+  to_port         = 3000
+  containers      = local.containers
+  ecs_launch_type = "EC2"
 }
 
 # Deploy static website

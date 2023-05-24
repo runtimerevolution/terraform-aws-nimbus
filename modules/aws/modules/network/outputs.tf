@@ -9,3 +9,7 @@ output "public_subnets_ids" {
 output "private_subnets_ids" {
   value = aws_subnet.private.*.id
 }
+
+output "security_group_id" {
+  value = aws_security_group.security_group.id
+}

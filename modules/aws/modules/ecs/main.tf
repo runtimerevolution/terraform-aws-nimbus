@@ -23,13 +23,13 @@ module "ecs_container" {
 
   source = "../ecs_container"
 
-  solution_name                   = var.solution_name
-  vpc_id                          = var.vpc_id
-  cluster_id                      = aws_ecs_cluster.cluster.id
-  load_balancer_id                = var.load_balancer_id
-  load_balancer_security_group_id = var.load_balancer_security_group_id
-  subnet_ids                      = var.subnets_ids
-  launch_type                     = var.ecs_launch_type
+  solution_name     = var.solution_name
+  vpc_id            = var.vpc_id
+  cluster_id        = aws_ecs_cluster.cluster.id
+  load_balancer_id  = var.load_balancer_id
+  security_group_id = var.security_group_id
+  subnet_ids        = var.subnets_ids
+  launch_type       = var.ecs_launch_type
 
   container_name   = each.key
   container_image  = each.value.container_image
