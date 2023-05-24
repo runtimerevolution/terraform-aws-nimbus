@@ -36,6 +36,4 @@ module "ecs_container" {
   container_cpu    = each.value.container_cpu
   container_memory = each.value.container_memory
   container_port   = each.value.container_port
-
-  depends_on = [module.ec2]
 }

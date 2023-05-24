@@ -49,6 +49,10 @@ resource "aws_security_group" "group" {
     to_port     = 0
     cidr_blocks = ["0.0.0.0/0"]
   }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 resource "aws_ecs_service" "service" {
