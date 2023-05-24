@@ -50,7 +50,3 @@ variable "container_cpu" {
 variable "container_memory" {
   type = number
 }
-
-variable "instance_count" {
-  type = number
-}
