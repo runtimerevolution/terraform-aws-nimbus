@@ -25,3 +25,8 @@ variable "containers" {
 variable "ecs_launch_type" {
   type = string
 }
+
+variable "ec2_instance_type" {
+  type    = string
+  default = "t3.micro"
+}

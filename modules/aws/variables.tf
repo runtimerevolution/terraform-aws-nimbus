@@ -53,6 +53,11 @@ variable "containers" {
 }
 
 variable "ecs_launch_type" {
-  type = string
+  type    = string
   default = "FARGATE"
+}
+
+variable "ec2_instance_type" {
+  type    = string
+  default = "t3.micro"
 }

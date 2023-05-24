@@ -2,6 +2,10 @@ resource "aws_ecs_cluster" "cluster" {
   name = "${var.solution_name}-cluster"
 }
 
+locals {
+  instance_count = sum([for container in var.containers : container["instance_count"]])
+}
+
 module "ec2" {
   count = var.ecs_launch_type == "EC2" ? 1 : 0
 
@@ -9,13 +13,14 @@ module "ec2" {
 
   solution_name     = var.solution_name
   cluster_name      = aws_ecs_cluster.cluster.name
-  instance_type     = "t3.medium"
-  security_group_id = var.load_balancer_security_group_id
+  instance_type     = var.ec2_instance_type
+  security_group_id = var.security_group_id
   subnets_ids       = var.subnets_ids
 
-  capacity     = 2
-  capacity_min = 1
-  capacity_max = 4
+
+  capacity     = local.instance_count
+  capacity_min = length(keys(var.containers))
+  capacity_max = local.instance_count
 }
 
 module "ecs_container" {
@@ -37,4 +42,5 @@ module "ecs_container" {
   container_cpu    = each.value.container_cpu
   container_memory = each.value.container_memory
   container_port   = each.value.container_port
+  instance_count   = each.value.instance_count
 }

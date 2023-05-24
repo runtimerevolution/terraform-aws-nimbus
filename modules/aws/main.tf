@@ -39,4 +39,5 @@ module "ecs" {
   subnets_ids       = module.network.private_subnets_ids
   containers        = var.containers
   ecs_launch_type   = var.ecs_launch_type
+  ec2_instance_type = var.ec2_instance_type
 }

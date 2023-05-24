@@ -60,7 +60,7 @@ resource "aws_ecs_service" "service" {
   cluster         = var.cluster_id
   task_definition = aws_ecs_task_definition.task_definition.arn
   desired_count   = var.instance_count
-  launch_type     = "FARGATE"
+  launch_type     = var.launch_type
 
   network_configuration {
     security_groups = [aws_security_group.group.id]
