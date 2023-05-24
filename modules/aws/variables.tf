@@ -41,12 +41,12 @@ variable "private_subnets_count" {
   default = 2
 }
 
-variable "load_balancer_from_port" {
+variable "from_port" {
   type    = number
   default = 80
 }
 
-variable "load_balancer_to_port" {
+variable "to_port" {
   type    = number
   default = 80
 }
@@ -54,4 +54,14 @@ variable "load_balancer_to_port" {
 variable "containers" {
   type    = any
   default = {}
+}
+
+variable "ecs_launch_type" {
+  type    = string
+  default = "FARGATE"
+}
+
+variable "ec2_instance_type" {
+  type    = string
+  default = "t3.micro"
 }

@@ -10,7 +10,7 @@ variable "load_balancer_id" {
   type = string
 }
 
-variable "load_balancer_security_group_id" {
+variable "security_group_id" {
   type = string
 }
 
@@ -19,5 +19,14 @@ variable "subnets_ids" {
 }
 
 variable "containers" {
-  type    = any
+  type = any
+}
+
+variable "ecs_launch_type" {
+  type = string
+}
+
+variable "ec2_instance_type" {
+  type    = string
+  default = "t3.micro"
 }

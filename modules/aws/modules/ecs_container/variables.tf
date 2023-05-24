@@ -15,12 +15,20 @@ variable "load_balancer_id" {
   type = string
 }
 
-variable "load_balancer_security_group_id" {
+variable "security_group_id" {
   type = string
 }
 
 variable "subnet_ids" {
   type = list(string)
+}
+
+variable "launch_type" {
+  type = string
+}
+
+variable "instance_count" {
+  type = number
 }
 
 variable "container_name" {
