@@ -61,3 +61,22 @@ resource "aws_route_table_association" "private" {
   subnet_id      = element(aws_subnet.private.*.id, count.index)
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
+
+resource "aws_security_group" "security_group" {
+  name   = "${var.solution_name}-security-group"
+  vpc_id = aws_vpc.vpc.id
+
+  ingress {
+    protocol    = "tcp"
+    from_port   = var.from_port
+    to_port     = var.to_port
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}

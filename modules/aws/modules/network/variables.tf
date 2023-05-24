@@ -13,3 +13,11 @@ variable "public_subnets_count" {
 variable "private_subnets_count" {
   type = number
 }
+
+variable "from_port" {
+  type = number
+}
+
+variable "to_port" {
+  type = number
+}
