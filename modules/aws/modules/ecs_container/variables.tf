@@ -23,6 +23,10 @@ variable "subnet_ids" {
   type = list(string)
 }
 
+variable "instance_count" {
+  type = number
+}
+
 variable "container_name" {
   type = string
 }
