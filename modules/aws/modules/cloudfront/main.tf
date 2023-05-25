@@ -88,6 +88,6 @@ resource "aws_route53_record" "route53" {
   alias {
     name                   = aws_cloudfront_distribution.cloudfront_distribution.domain_name
     zone_id                = aws_cloudfront_distribution.cloudfront_distribution.hosted_zone_id
-    evaluate_target_health = false
+    evaluate_target_health = true
   }
 }
