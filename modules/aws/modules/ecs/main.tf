@@ -11,16 +11,16 @@ module "ec2" {
 
   source = "../ec2"
 
-  solution_name     = var.solution_name
-  cluster_name      = aws_ecs_cluster.cluster.name
-  instance_type     = var.ec2_instance_type
-  security_group_id = var.security_group_id
-  subnets_ids       = var.subnets_ids
-
-
-  capacity     = local.instance_count
-  capacity_min = length(keys(var.containers))
-  capacity_max = local.instance_count
+  solution_name                 = var.solution_name
+  cluster_name                  = aws_ecs_cluster.cluster.name
+  instance_type                 = var.ec2_instance_type
+  security_group_id             = var.security_group_id
+  subnets_ids                   = var.subnets_ids
+  capacity                      = local.instance_count
+  capacity_min                  = length(keys(var.containers))
+  capacity_max                  = local.instance_count
+  ec2_health_check_grace_period = var.ec2_health_check_grace_period
+  ec2_health_check_type         = var.ec2_health_check_type
 }
 
 module "ecs_container" {
