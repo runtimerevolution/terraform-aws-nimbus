@@ -65,3 +65,13 @@ variable "ec2_instance_type" {
   type    = string
   default = "t3.micro"
 }
+
+variable "ec2_health_check_grace_period" {
+  type    = number
+  default = 300
+}
+
+variable "ec2_health_check_type" {
+  type    = string
+  default = "EC2"
+}

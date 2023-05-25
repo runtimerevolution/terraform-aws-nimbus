@@ -29,3 +29,11 @@ variable "capacity_min" {
 variable "capacity_max" {
   type = number
 }
+
+variable "ec2_health_check_grace_period" {
+  type = number
+}
+
+variable "ec2_health_check_type" {
+  type = string
+}

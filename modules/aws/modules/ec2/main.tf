@@ -33,8 +33,8 @@ resource "aws_autoscaling_group" "ecs_ec2_autoscaling_group" {
   desired_capacity          = var.capacity
   min_size                  = var.capacity_min
   max_size                  = var.capacity_max
-  health_check_grace_period = 300
-  health_check_type         = "EC2"
+  health_check_grace_period = var.ec2_health_check_grace_period # 300
+  health_check_type         = var.ec2_health_check_type         #"EC2"
 
   lifecycle {
     create_before_destroy = true
