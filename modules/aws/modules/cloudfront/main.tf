@@ -1,3 +1,11 @@
+locals {
+  certificate = {
+    cloudfront_default_certificate = !var.enable_custom_domain
+    acm_certificate_arn            = var.enable_custom_domain ? var.acm_certificate_arn : null
+    ssl_support_method             = var.enable_custom_domain ? "sni-only" : null
+  }
+}
+
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
 
 module "static_website_bucket" {
@@ -19,7 +27,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     }
   }
 
-  aliases = [var.domain, "www.${var.domain}"]
+  aliases = var.enable_custom_domain ? [var.domain, "www.${var.domain}"] : []
 
   enabled             = true
   is_ipv6_enabled     = true
@@ -60,14 +68,17 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = var.acm_certificate_arn
-    ssl_support_method  = "sni-only"
+    cloudfront_default_certificate = local.certificate.cloudfront_default_certificate
+    acm_certificate_arn            = local.certificate.acm_certificate_arn
+    ssl_support_method             = local.certificate.ssl_support_method
   }
 
   depends_on = [module.static_website_bucket]
 }
 
 resource "aws_route53_record" "root" {
+  count = var.enable_custom_domain ? 1 : 0
+
   zone_id = var.route53_zone_id
   name    = var.domain
   type    = "A"
@@ -80,6 +91,8 @@ resource "aws_route53_record" "root" {
 }
 
 resource "aws_route53_record" "www" {
+  count = var.enable_custom_domain ? 1 : 0
+
   zone_id = var.route53_zone_id
   name    = "www.${var.domain}"
   type    = "A"

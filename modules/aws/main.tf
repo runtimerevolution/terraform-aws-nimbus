@@ -1,6 +1,8 @@
 module "route53" {
+  count = var.enable_custom_domain ? 1 : 0
+
   source = "./modules/route53"
-  
+
   providers = {
     aws = aws.virginia
   }
@@ -12,12 +14,13 @@ module "static_website" {
   source = "./modules/cloudfront"
 
   solution_name                  = var.solution_name
+  enable_custom_domain           = var.enable_custom_domain
   domain                         = var.domain
   cloudfront_default_root_object = var.cloudfront_default_root_object
   cloudfront_origin_id           = var.cloudfront_origin_id
   cloudfront_price_class         = var.cloudfront_price_class
-  acm_certificate_arn            = module.route53.acm_certificate_arn
-  route53_zone_id                = module.route53.zone_id
+  acm_certificate_arn            = var.enable_custom_domain ? module.route53[0].acm_certificate_arn : null
+  route53_zone_id                = var.enable_custom_domain ? module.route53[0].zone_id : null
 }
 
 module "network" {

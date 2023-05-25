@@ -2,6 +2,10 @@ variable "solution_name" {
   type = string
 }
 
+variable "enable_custom_domain" {
+  type = bool
+}
+
 variable "domain" {
   type = string
 }
