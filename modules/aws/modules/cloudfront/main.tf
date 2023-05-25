@@ -4,6 +4,8 @@ locals {
     acm_certificate_arn            = var.enable_custom_domain ? var.acm_certificate_arn : null
     ssl_support_method             = var.enable_custom_domain ? "sni-only" : null
   }
+
+  aliases = var.enable_custom_domain ? [var.domain, "www.${var.domain}"] : []
 }
 
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
@@ -27,7 +29,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     }
   }
 
-  aliases = var.enable_custom_domain ? [var.domain, "www.${var.domain}"] : []
+  aliases = local.aliases
 
   enabled             = true
   is_ipv6_enabled     = true
@@ -76,25 +78,11 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   depends_on = [module.static_website_bucket]
 }
 
-resource "aws_route53_record" "root" {
-  count = var.enable_custom_domain ? 1 : 0
+resource "aws_route53_record" "route53" {
+  for_each = toset(local.aliases)
 
   zone_id = var.route53_zone_id
-  name    = var.domain
-  type    = "A"
-
-  alias {
-    name                   = aws_cloudfront_distribution.cloudfront_distribution.domain_name
-    zone_id                = aws_cloudfront_distribution.cloudfront_distribution.hosted_zone_id
-    evaluate_target_health = false
-  }
-}
-
-resource "aws_route53_record" "www" {
-  count = var.enable_custom_domain ? 1 : 0
-
-  zone_id = var.route53_zone_id
-  name    = "www.${var.domain}"
+  name    = each.value
   type    = "A"
 
   alias {
