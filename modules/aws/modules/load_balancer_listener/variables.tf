@@ -1,6 +1,5 @@
 variable "solution_name" {
   type    = string
-  default = "default"
 }
 
 variable "vpc_id" {

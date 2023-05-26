@@ -1,6 +1,5 @@
 variable "solution_name" {
   type    = string
-  default = "default"
 }
 
 variable "vpc_id" {
@@ -25,6 +24,12 @@ variable "subnet_ids" {
 
 variable "launch_type" {
   type = string
+  description = "Launch type on which to run the ECS services."
+
+  validation {
+    condition     = contains(["FARGATE", "EC2"], var.ecs_launch_type)
+    error_message = "Invalid value. Expected 'FARGATE' or 'EC2'."
+  }
 }
 
 variable "instance_count" {
