@@ -76,3 +76,16 @@ module "ecs" {
   ec2_health_check_grace_period = var.ec2_health_check_grace_period
   ec2_health_check_type         = var.ec2_health_check_type
 }
+
+# -----------------------------------------------------------------------------
+# Databases
+# -----------------------------------------------------------------------------
+module "databases" {
+  count = length(keys(var.databases)) > 0 ? 1 : 0
+
+  source = "./modules/databases"
+
+  subnets_ids       = module.network.private_subnets_ids
+  security_group_id = module.network.security_group_id
+  databases         = var.databases
+}
