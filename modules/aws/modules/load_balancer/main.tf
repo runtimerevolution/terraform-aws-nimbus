@@ -8,7 +8,10 @@ locals {
   domain = "lb.${var.domain}"
 }
 
-resource "aws_route53_record" "subdomain" {
+# -----------------------------------------------------------------------------
+# Create a alias for the load balancer in Route53
+# -----------------------------------------------------------------------------
+resource "aws_route53_record" "alias" {
   count = var.enable_custom_domain ? 1 : 0
 
   zone_id = var.route53_zone_id

@@ -6,6 +6,9 @@ locals {
   instance_count = sum([for container in var.containers : container["instance_count"]])
 }
 
+# -----------------------------------------------------------------------------
+# If launch type is 'EC2', setup an AWS autoscaling group 
+# -----------------------------------------------------------------------------
 module "ec2" {
   count = var.ecs_launch_type == "EC2" ? 1 : 0
 

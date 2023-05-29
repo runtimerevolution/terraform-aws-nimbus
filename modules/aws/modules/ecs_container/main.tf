@@ -1,3 +1,6 @@
+# -----------------------------------------------------------------------------
+# Setup a load balancer listener for the ECS service
+# -----------------------------------------------------------------------------
 module "lb_listener" {
   source = "../load_balancer_listener"
 
@@ -32,6 +35,9 @@ resource "aws_ecs_task_definition" "task_definition" {
 DEFINITION
 }
 
+# -----------------------------------------------------------------------------
+# Create a security group to assign to the ECS services
+# -----------------------------------------------------------------------------
 resource "aws_security_group" "group" {
   name   = "${var.solution_name}-${var.container_name}-sg"
   vpc_id = var.vpc_id

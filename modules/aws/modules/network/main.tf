@@ -1,4 +1,6 @@
+# -----------------------------------------------------------------------------
 # VPC
+# -----------------------------------------------------------------------------
 resource "aws_vpc" "vpc" {
   cidr_block = var.vpc_cidr_block
 
@@ -7,7 +9,9 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-# Subnets
+# -----------------------------------------------------------------------------
+# Public and private subnets
+# -----------------------------------------------------------------------------
 resource "aws_subnet" "public" {
   count                   = var.public_subnets_count
   cidr_block              = cidrsubnet(aws_vpc.vpc.cidr_block, 8, 2 + count.index)
@@ -23,7 +27,10 @@ resource "aws_subnet" "private" {
   vpc_id            = aws_vpc.vpc.id
 }
 
-# Resources
+# -----------------------------------------------------------------------------
+# Internet gateway for communication between the VPC 
+# and the rest of the internet
+# -----------------------------------------------------------------------------
 resource "aws_internet_gateway" "gateway" {
   vpc_id = aws_vpc.vpc.id
 }
@@ -40,6 +47,10 @@ resource "aws_eip" "gateway" {
   depends_on = [aws_internet_gateway.gateway]
 }
 
+# -----------------------------------------------------------------------------
+# NAT gateways allow communication from inside the VPC to outside 
+# while preventing the other way around
+# -----------------------------------------------------------------------------
 resource "aws_nat_gateway" "gateway" {
   count         = var.public_subnets_count
   subnet_id     = element(aws_subnet.public.*.id, count.index)
@@ -62,6 +73,9 @@ resource "aws_route_table_association" "private" {
   route_table_id = element(aws_route_table.private.*.id, count.index)
 }
 
+# -----------------------------------------------------------------------------
+# Security group
+# -----------------------------------------------------------------------------
 resource "aws_security_group" "security_group" {
   name   = "${var.solution_name}-security-group"
   vpc_id = aws_vpc.vpc.id

@@ -10,6 +10,9 @@ locals {
 
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
 
+# -----------------------------------------------------------------------------
+# Create a S3 bucket to host the static website
+# -----------------------------------------------------------------------------
 module "static_website_bucket" {
   source = "../s3_bucket"
 
@@ -78,7 +81,10 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   depends_on = [module.static_website_bucket]
 }
 
-resource "aws_route53_record" "route53" {
+# -----------------------------------------------------------------------------
+# Create a alias for the distribution in Route53
+# -----------------------------------------------------------------------------
+resource "aws_route53_record" "alias" {
   for_each = toset(local.aliases)
 
   zone_id = var.route53_zone_id

@@ -1,3 +1,6 @@
+# -----------------------------------------------------------------------------
+# Setup Route53 as the DNS for the solution
+# -----------------------------------------------------------------------------
 module "route53" {
   count = var.enable_custom_domain ? 1 : 0
 
@@ -10,6 +13,9 @@ module "route53" {
   domain = var.domain
 }
 
+# -----------------------------------------------------------------------------
+# Static website deployment using AWS Cloudfront
+# -----------------------------------------------------------------------------
 module "static_website" {
   source = "./modules/cloudfront"
 
@@ -23,6 +29,9 @@ module "static_website" {
   route53_zone_id                = var.enable_custom_domain ? module.route53[0].zone_id : null
 }
 
+# -----------------------------------------------------------------------------
+# Basic network infrastructure deployment
+# -----------------------------------------------------------------------------
 module "network" {
   source = "./modules/network"
 
@@ -34,6 +43,9 @@ module "network" {
   to_port               = var.to_port
 }
 
+# -----------------------------------------------------------------------------
+# Setup a load balancer
+# -----------------------------------------------------------------------------
 module "load_balancer" {
   source = "./modules/load_balancer"
 
@@ -45,6 +57,9 @@ module "load_balancer" {
   route53_zone_id      = var.enable_custom_domain ? module.route53[0].zone_id : null
 }
 
+# -----------------------------------------------------------------------------
+# ECS cluster and services
+# -----------------------------------------------------------------------------
 module "ecs" {
   count = length(keys(var.containers)) > 0 ? 1 : 0
 
