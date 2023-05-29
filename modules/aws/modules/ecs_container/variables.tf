@@ -4,10 +4,12 @@ variable "solution_name" {
 
 variable "vpc_id" {
   type = string
+  description = "VPC in which to create the resources."
 }
 
 variable "cluster_id" {
   type = string
+  description = "ECS Cluster in which to create the services in"
 }
 
 variable "load_balancer_id" {

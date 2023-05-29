@@ -38,7 +38,6 @@ module "load_balancer" {
   source = "./modules/load_balancer"
 
   solution_name        = var.solution_name
-  vpc_id               = module.network.vpc_id
   security_group_id    = module.network.security_group_id
   subnets_ids          = module.network.public_subnets_ids
   enable_custom_domain = var.enable_custom_domain

@@ -29,8 +29,10 @@ variable "cloudfront_price_class" {
 
 variable "acm_certificate_arn" {
   type = string
+  description = "ARN of the AWS Certificate Manager certificate to use with the distribution."
 }
 
 variable "route53_zone_id" {
   type = string
+  description = "The Route53 hosted zone ID to contain the alias record for the distribution."
 }
