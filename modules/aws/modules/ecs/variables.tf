@@ -1,26 +1,31 @@
 variable "solution_name" {
-  type = string
+  type        = string
+  description = "Name of the solution"
 }
 
 variable "vpc_id" {
-  type = string
+  type        = string
+  description = "VPC ID in which to create the resources."
 }
 
 variable "load_balancer_id" {
-  type = string
+  type        = string
+  description = "Load balancer ID to assign to the ECS containers listeners"
 }
 
 variable "security_group_id" {
-  type = string
+  type        = string
+  description = "Security group ID to assign to the created resources."
 }
 
 variable "subnets_ids" {
-  type = list(string)
+  type        = list(string)
+  description = "List of subnet IDs to launch the EC2 instances in."
 }
 
 variable "containers" {
   type        = any
-  description = "Details of docker containers to be deployed."
+  description = "Details of containers to be launched."
 }
 
 variable "ecs_launch_type" {
