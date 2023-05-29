@@ -33,7 +33,7 @@ variable "launch_type" {
   description = "Launch type on which to run the ECS services."
 
   validation {
-    condition     = contains(["FARGATE", "EC2"], var.ecs_launch_type)
+    condition     = contains(["FARGATE", "EC2"], var.launch_type)
     error_message = "Invalid value. Expected 'FARGATE' or 'EC2'."
   }
 }

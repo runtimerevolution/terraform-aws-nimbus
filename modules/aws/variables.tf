@@ -104,7 +104,7 @@ variable "ec2_health_check_type" {
   default     = "EC2"
 
   validation {
-    condition     = contains(["EC2", "ELB"], var.ecs_launch_type)
+    condition     = contains(["EC2", "ELB"], var.ec2_health_check_type)
     error_message = "Invalid value. Expected 'EC2' or 'ELB'."
   }
 }
