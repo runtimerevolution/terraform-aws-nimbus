@@ -112,4 +112,5 @@ variable "ec2_health_check_type" {
 variable "databases" {
   type        = any
   description = "Databases instances to deploy."
+  default     = {}
 }
