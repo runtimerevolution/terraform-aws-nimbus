@@ -4,8 +4,8 @@ locals {
     acm_certificate_arn            = var.enable_custom_domain ? var.acm_certificate_arn : null
 
     # As recommended in the AWS documentation, when using custom domains set 
-    # 'ssl_support_method' as 'sni-only' to only accept HTTPS connections from browsers 
-    # and clients that support server name indication, which most do.
+    # 'ssl_support_method' as 'sni-only' to accept HTTPS connections only from 
+    # browsers and clients that support server name indication, which most do.
     ssl_support_method = var.enable_custom_domain ? "sni-only" : null
   }
 
