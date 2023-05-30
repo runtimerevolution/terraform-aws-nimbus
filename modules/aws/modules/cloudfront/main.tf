@@ -2,7 +2,11 @@ locals {
   certificate = {
     cloudfront_default_certificate = !var.enable_custom_domain
     acm_certificate_arn            = var.enable_custom_domain ? var.acm_certificate_arn : null
-    ssl_support_method             = var.enable_custom_domain ? "sni-only" : null
+
+    # As recommended in the AWS documentation, when using custom domains set 
+    # 'ssl_support_method' as 'sni-only' to only accept HTTPS connections from browsers 
+    # and clients that support server name indication, which most do.
+    ssl_support_method = var.enable_custom_domain ? "sni-only" : null
   }
 
   aliases = var.enable_custom_domain ? [var.domain, "www.${var.domain}"] : []
