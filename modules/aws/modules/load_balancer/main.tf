@@ -4,10 +4,6 @@ resource "aws_lb" "lb" {
   security_groups = [var.security_group_id]
 }
 
-locals {
-  domain = "lb.${var.domain}"
-}
-
 # -----------------------------------------------------------------------------
 # Create a alias for the load balancer in Route53
 # -----------------------------------------------------------------------------
@@ -15,7 +11,7 @@ resource "aws_route53_record" "alias" {
   count = var.enable_custom_domain ? 1 : 0
 
   zone_id = var.route53_zone_id
-  name    = local.domain
+  name    = "lb.${var.domain}"
   type    = "A"
 
   alias {
