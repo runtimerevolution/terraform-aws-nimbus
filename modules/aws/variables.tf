@@ -135,6 +135,6 @@ variable "databases" {
       publicly_accessible             = optional(bool)
     })
   )
-  description = "Databases instances to deploy."
+  description = "Databases instances to deploy. Explanation for each parameter can be found here: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#argument-reference"
   default     = []
 }
