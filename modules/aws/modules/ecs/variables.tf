@@ -38,3 +38,11 @@ variable "ec2_health_check_grace_period" {
 variable "ec2_health_check_type" {
   type = string
 }
+
+variable "ami" {
+  type = object({
+    name        = string
+    most_recent = bool
+    owners      = list(string)
+  })
+}

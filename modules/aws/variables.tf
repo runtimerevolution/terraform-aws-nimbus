@@ -71,3 +71,11 @@ variable "ec2_health_check_type" {
   type    = string
   default = "EC2"
 }
+
+variable "ami" {
+  type = object({
+    name        = string
+    most_recent = bool
+    owners      = list(string)
+  })
+}

@@ -10,6 +10,14 @@ variable "instance_type" {
   type = string
 }
 
+variable "ami" {
+  type = object({
+    name        = string
+    most_recent = bool
+    owners      = list(string)
+  })
+}
+
 variable "security_group_id" {
   type = string
 }
