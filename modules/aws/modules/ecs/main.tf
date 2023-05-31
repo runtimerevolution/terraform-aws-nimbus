@@ -14,7 +14,7 @@ module "ec2" {
   solution_name                 = var.solution_name
   cluster_name                  = aws_ecs_cluster.cluster.name
   instance_type                 = var.ec2_instance_type
-  ami                           = var.ami
+  ami_id                        = var.ami_id
   security_group_id             = var.security_group_id
   subnets_ids                   = var.subnets_ids
   capacity                      = local.instance_count

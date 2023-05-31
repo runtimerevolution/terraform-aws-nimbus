@@ -39,10 +39,7 @@ variable "ec2_health_check_type" {
   type = string
 }
 
-variable "ami" {
-  type = object({
-    name        = string
-    most_recent = bool
-    owners      = list(string)
-  })
+variable "ami_id" {
+  type        = string
+  description = "ID of the AMI to use when creating EC2 instances."
 }

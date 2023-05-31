@@ -9,12 +9,12 @@ data "aws_iam_policy_document" "ecs_agent" {
   }
 }
 
-data "aws_ami" "amazon_linux" {
-  most_recent = lookup(var.ami, "most_recent", true)
-  owners = lookup(var.ami, "owners", null)
+data "aws_ami" "default" {
+  most_recent = true
+  owners      = ["amazon"]
 
   filter {
     name   = "name"
-    values = [var.ami.name]
+    values = ["amzn2-ami-ecs-hvm-*-x86_64-ebs"]
   }
 }

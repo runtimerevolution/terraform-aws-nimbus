@@ -32,11 +32,7 @@ module "application_aws" {
   containers        = local.containers
   ecs_launch_type   = "EC2"
   ec2_instance_type = "t3.medium"
-  ami = {
-    "name" : "amzn2-ami-ecs-hvm-*-x86_64-ebs"
-    "most_recent" : true
-    "owners" : ["amazon"]
-  }
+  ami_id            = "ami-01a7573bb17a45f12"
 }
 
 # Deploy static website
