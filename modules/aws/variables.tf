@@ -70,9 +70,16 @@ variable "to_port" {
 }
 
 variable "containers" {
-  type        = any
-  description = "Details of docker containers to be deployed."
-  default     = {}
+  type = list(object({
+    name           = string
+    image          = string
+    cpu            = number
+    memory         = number
+    port           = number
+    instance_count = number
+  }))
+  description = "Container instances to be deployed."
+  default     = []
 }
 
 variable "ecs_launch_type" {
