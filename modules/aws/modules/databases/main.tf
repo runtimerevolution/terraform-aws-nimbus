@@ -3,9 +3,9 @@ resource "aws_db_subnet_group" "subnet" {
 }
 
 resource "aws_db_instance" "instance" {
-  for_each = var.databases
+  for_each = { for db in var.databases : db.identifier => db }
 
-  identifier                      = each.key
+  identifier                      = each.value.identifier
   allocated_storage               = each.value.allocated_storage
   max_allocated_storage           = lookup(each.value, "max_allocated_storage", 0)
   instance_class                  = each.value.instance_class

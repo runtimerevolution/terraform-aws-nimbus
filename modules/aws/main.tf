@@ -81,7 +81,7 @@ module "ecs" {
 # Databases
 # -----------------------------------------------------------------------------
 module "databases" {
-  count = length(keys(var.databases)) > 0 ? 1 : 0
+  count = length(var.databases) > 0 ? 1 : 0
 
   source = "./modules/databases"
 

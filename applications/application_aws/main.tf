@@ -16,8 +16,9 @@ locals {
       instance_count   = 2
     }
   }
-  databases = {
-    "mysql-1" : {
+  databases = [
+    {
+      "identifier"              = "mysql-1"
       "allocated_storage"       = 5
       "max_allocated_storage"   = 10
       "backup_retention_period" = 2
@@ -29,7 +30,7 @@ locals {
       "password"                = "password"
       "port"                    = "3306"
     }
-  }
+  ]
 }
 
 provider "aws" {

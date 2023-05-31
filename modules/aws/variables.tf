@@ -110,7 +110,31 @@ variable "ec2_health_check_type" {
 }
 
 variable "databases" {
-  type        = any
+  type = list(
+    object({
+      identifier                      = string
+      allocated_storage               = number
+      max_allocated_storage           = optional(number)
+      instance_class                  = string
+      engine                          = string
+      engine_version                  = optional(string)
+      db_name                         = string
+      username                        = string
+      password                        = string
+      port                            = optional(number)
+      multi_az                        = optional(bool)
+      backup_retention_period         = optional(number)
+      backup_window                   = optional(string)
+      maintenance_window              = optional(string)
+      deletion_protection             = optional(bool)
+      enabled_cloudwatch_logs_exports = optional(list(string))
+      storage_encrypted               = optional(bool)
+      storage_type                    = optional(string)
+      skip_final_snapshot             = optional(bool)
+      final_snapshot_identifier       = optional(bool)
+      publicly_accessible             = optional(bool)
+    })
+  )
   description = "Databases instances to deploy."
-  default     = {}
+  default     = []
 }
