@@ -43,27 +43,27 @@ variable "instance_count" {
   description = "Number of instances of the task definition to place and keep running."
 }
 
-variable "container_name" {
+variable "name" {
   type        = string
   description = "Name of the container to associate with the load balancer."
 }
 
-variable "container_image" {
+variable "image" {
   type        = string
   description = "The image used to start a container. "
 }
 
-variable "container_port" {
+variable "port" {
   type        = number
   description = "Port on the container to associate with the load balancer."
 }
 
-variable "container_cpu" {
+variable "cpu" {
   type        = number
   description = "Number of cpu units used by the task."
 }
 
-variable "container_memory" {
+variable "memory" {
   type        = number
   description = "Amount (in MiB) of memory used by the task."
 }

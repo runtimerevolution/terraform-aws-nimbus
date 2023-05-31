@@ -24,8 +24,15 @@ variable "subnets_ids" {
 }
 
 variable "containers" {
-  type        = any
-  description = "Details of containers to be launched."
+  type = list(object({
+    name           = string
+    image          = string
+    cpu            = number
+    memory         = number
+    port           = number
+    instance_count = number
+  }))
+  description = "Containers instances to be deployed."
 }
 
 variable "ecs_launch_type" {

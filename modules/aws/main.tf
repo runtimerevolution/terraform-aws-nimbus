@@ -61,7 +61,7 @@ module "load_balancer" {
 # ECS cluster and services
 # -----------------------------------------------------------------------------
 module "ecs" {
-  count = length(keys(var.containers)) > 0 ? 1 : 0
+  count = length(var.containers) > 0 ? 1 : 0
 
   source = "./modules/ecs"
 
