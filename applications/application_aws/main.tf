@@ -20,8 +20,14 @@ locals {
   ]
   databases = [
     {
-      "engine"   = "mysql"
-      "password" = "password"
+      "engine"              = "mysql"
+      "password"            = "password"
+      "skip_final_snapshot" = true
+    },
+    {
+      "engine"              = "mysql"
+      "password"            = "password"
+      "skip_final_snapshot" = true
     }
   ]
 }

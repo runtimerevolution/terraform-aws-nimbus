@@ -3,7 +3,7 @@ resource "aws_db_subnet_group" "subnet" {
 }
 
 resource "aws_db_instance" "instance" {
-  for_each = { for db in var.databases : db.engine => db }
+  for_each = { for i, db in var.databases : i => db }
 
   identifier                      = each.value.identifier
   allocated_storage               = coalesce(each.value.allocated_storage, 20)
@@ -29,14 +29,3 @@ resource "aws_db_instance" "instance" {
   db_subnet_group_name            = aws_db_subnet_group.subnet.id
   vpc_security_group_ids          = [var.security_group_id]
 }
-
-# "identifier"              = "mysql-1"
-# "allocated_storage"       = 5
-# "max_allocated_storage"   = 10
-# "backup_retention_period" = 2
-# "multi_az"                = true
-# "instance_class"          = "db.t3.micro"
-# "db_name"                 = "worker_db"
-# "username"                = "worker"
-# "password"                = "password"
-# "port"                    = "3306"
