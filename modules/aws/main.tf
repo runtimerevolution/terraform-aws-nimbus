@@ -85,6 +85,7 @@ module "databases" {
 
   source = "./modules/databases"
 
+  solution_name     = var.solution_name
   subnets_ids       = module.network.private_subnets_ids
   security_group_id = module.network.security_group_id
   databases         = var.databases

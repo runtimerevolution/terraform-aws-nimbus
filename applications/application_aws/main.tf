@@ -20,17 +20,8 @@ locals {
   ]
   databases = [
     {
-      "identifier"              = "mysql-1"
-      "allocated_storage"       = 5
-      "max_allocated_storage"   = 10
-      "backup_retention_period" = 2
-      "multi_az"                = true
-      "engine"                  = "mysql"
-      "instance_class"          = "db.t3.micro"
-      "db_name"                 = "worker_db"
-      "username"                = "worker"
-      "password"                = "password"
-      "port"                    = "3306"
+      "engine"   = "mysql"
+      "password" = "password"
     }
   ]
 }

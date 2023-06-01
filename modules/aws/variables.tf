@@ -119,15 +119,15 @@ variable "ec2_health_check_type" {
 variable "databases" {
   type = list(
     object({
-      identifier                      = string
-      allocated_storage               = number
+      identifier                      = optional(string)
+      allocated_storage               = optional(number)
       max_allocated_storage           = optional(number)
-      instance_class                  = string
+      instance_class                  = optional(string)
       engine                          = string
       engine_version                  = optional(string)
-      db_name                         = string
-      username                        = string
-      password                        = string
+      db_name                         = optional(string)
+      username                        = optional(string)
+      password                        = optional(string)
       port                            = optional(number)
       multi_az                        = optional(bool)
       backup_retention_period         = optional(number)
