@@ -1,5 +1,21 @@
 locals {
   provider_region = "eu-north-1"
+  containers = {
+    "hello-world" : {
+      container_image  = "registry.gitlab.com/architect-io/artifacts/nodejs-hello-world:latest"
+      container_cpu    = 1024
+      container_memory = 2048
+      container_port   = 3000
+      instance_count   = 2
+    },
+    "nginx" : {
+      container_image  = "nginx:latest"
+      container_cpu    = 1024
+      container_memory = 2048
+      container_port   = 80
+      instance_count   = 2
+    }
+  }
 }
 
 provider "aws" {
@@ -9,9 +25,11 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  # Provider
   solution_name   = "kyoto"
   provider_region = local.provider_region
+  from_port       = 80
+  to_port         = 3000
+  containers      = local.containers
 }
 
 # Deploy static website
