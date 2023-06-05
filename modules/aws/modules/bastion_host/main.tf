@@ -11,11 +11,6 @@ resource "aws_iam_role" "bastion" {
   assume_role_policy = data.aws_iam_policy_document.bastion.json
 }
 
-resource "aws_iam_role_policy_attachment" "bastion_ssm" {
-  role       = aws_iam_role.bastion.name
-  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
-}
-
 resource "aws_iam_role_policy_attachment" "bastion_ec2_instance_connect" {
   role       = aws_iam_role.bastion.name
   policy_arn = "arn:aws:iam::aws:policy/EC2InstanceConnect"
@@ -34,8 +29,8 @@ resource "aws_key_pair" "bastion" {
 
   provisioner "local-exec" {
     command = <<-EOT
-      echo '${tls_private_key.bastion.private_key_pem}' > bastion.pem
-      chmod 400 bastion.pem
+      echo '${tls_private_key.bastion.private_key_pem}' > ${var.solution_name}-bastion.pem
+      chmod 400 ${var.solution_name}-bastion.pem
     EOT
   }
 }
@@ -87,12 +82,11 @@ resource "aws_launch_template" "bastion" {
     name = aws_iam_instance_profile.bastion.name
   }
 
-  image_id                             = "ami-01a7573bb17a45f12"
+  image_id                             = coalesce(var.ami_id, data.aws_ami.default.id)
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t3.micro"
 
   network_interfaces {
-    # associate_public_ip_address = false
     security_groups = [aws_security_group.bastion.id]
   }
 
@@ -103,7 +97,7 @@ resource "aws_launch_template" "bastion" {
 
 
 # -----------------------------------------------------------------------------
-# ASG
+# AWS autoscaling group
 # -----------------------------------------------------------------------------
 resource "aws_autoscaling_group" "bastion" {
   name = "${var.solution_name}-bastion"

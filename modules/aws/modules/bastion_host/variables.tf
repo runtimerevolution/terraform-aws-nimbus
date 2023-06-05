@@ -6,7 +6,6 @@ variable "solution_name" {
 variable "ami_id" {
   type        = string
   description = "ID of the AMI to use when creating the bastion host."
-  default     = null
 }
 
 variable "subnets_ids" {

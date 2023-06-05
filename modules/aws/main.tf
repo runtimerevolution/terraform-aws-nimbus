@@ -92,9 +92,12 @@ module "databases" {
 }
 
 module "bastion_host" {
+  count = var.enable_bastion_host ? 1 : 0
+
   source = "./modules/bastion_host"
 
   solution_name = var.solution_name
+  ami_id = var.bastion_ami_id
   subnets_ids   = module.network.public_subnets_ids
   vpc_id        = module.network.vpc_id
 }

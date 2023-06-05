@@ -145,3 +145,15 @@ variable "databases" {
   description = "Databases instances to deploy. Explanation for each parameter can be found here: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#argument-reference"
   default     = []
 }
+
+variable "enable_bastion_host" {
+  type        = bool
+  description = "Specifies if a bastion host to access private resources through SSH should be created."
+  default     = false
+}
+
+variable "bastion_ami_id" {
+  type        = string
+  description = "ID of the AMI to use when creating the bastion host."
+  default     = null
+}
