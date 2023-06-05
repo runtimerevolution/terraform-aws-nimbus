@@ -13,6 +13,14 @@ variable "domain" {
   description = "The base domain for the solution."
 }
 
+variable "enable_custom_domain" {
+  type = bool
+}
+
+variable "domain" {
+  type = string
+}
+
 variable "cloudfront_default_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
@@ -36,4 +44,12 @@ variable "acm_certificate_arn" {
 variable "route53_zone_id" {
   type        = string
   description = "The Route53 hosted zone ID to contain the alias record for the distribution."
+}
+
+variable "acm_certificate_arn" {
+  type = string
+}
+
+variable "route53_zone_id" {
+  type = string
 }
