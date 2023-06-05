@@ -9,7 +9,7 @@ data "aws_iam_policy_document" "ecs_agent" {
   }
 }
 
-data "aws_ami" "amazon_linux" {
+data "aws_ami" "default" {
   most_recent = true
   owners      = ["amazon"]
 

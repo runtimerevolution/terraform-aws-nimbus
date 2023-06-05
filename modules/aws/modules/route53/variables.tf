@@ -1,4 +1,4 @@
 variable "domain" {
-  type = string
+  type        = string
   description = "The base domain for the solution."
 }

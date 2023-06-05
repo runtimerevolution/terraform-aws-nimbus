@@ -75,6 +75,7 @@ module "ecs" {
   ec2_instance_type             = var.ec2_instance_type
   ec2_health_check_grace_period = var.ec2_health_check_grace_period
   ec2_health_check_type         = var.ec2_health_check_type
+  ami_id                        = var.ami_id
 }
 
 # -----------------------------------------------------------------------------

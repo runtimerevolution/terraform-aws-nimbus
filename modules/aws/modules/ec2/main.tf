@@ -20,7 +20,7 @@ resource "aws_iam_role_policy_attachment" "ecs_agent" {
 # Create an autoscaling group from a launch template
 # -----------------------------------------------------------------------------
 resource "aws_launch_configuration" "ecs_ec2_launch_config" {
-  image_id             = data.aws_ami.amazon_linux.id
+  image_id             = data.aws_ami.default.id
   iam_instance_profile = aws_iam_instance_profile.ecs_ec2_role.name
   security_groups      = [var.security_group_id]
   user_data            = "#!/bin/bash\necho ECS_CLUSTER=${var.cluster_name} >> /etc/ecs/ecs.config"
