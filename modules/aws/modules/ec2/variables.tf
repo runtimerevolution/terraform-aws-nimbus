@@ -47,3 +47,8 @@ variable "ec2_health_check_type" {
   type        = string
   description = "Controls how health checking in the EC2 instance auto scaling group is done."
 }
+
+variable "ami_id" {
+  type        = string
+  description = "ID of the AMI to use when creating EC2 instances."
+}
