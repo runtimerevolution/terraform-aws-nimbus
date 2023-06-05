@@ -20,7 +20,7 @@ locals {
   ]
   databases = [
     {
-      "engine"              = "mysql"
+      "engine"              = "postgres"
       "password"            = "password"
       "skip_final_snapshot" = true
     },
@@ -39,16 +39,16 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  solution_name        = "kyoto"
+  solution_name = "kyoto"
   # enable_custom_domain = true
   # domain               = "kyoto-tm.pt"
-  provider_region      = local.provider_region
-  from_port            = 80
-  to_port              = 3000
-  containers           = local.containers
+  provider_region = local.provider_region
+  from_port       = 80
+  to_port         = 5432
+  containers      = local.containers
   # ecs_launch_type      = "EC2"
   # ec2_instance_type    = "t3.medium"
-  databases            = local.databases
+  databases = local.databases
 }
 
 # Deploy static website

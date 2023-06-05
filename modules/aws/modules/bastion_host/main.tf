@@ -24,18 +24,18 @@ resource "aws_iam_role_policy_attachment" "bastion_ec2_instance_connect" {
 # -----------------------------------------------------------------------------
 # Launch template
 # -----------------------------------------------------------------------------
-resource "tls_private_key" "my_key" {
+resource "tls_private_key" "bastion" {
   algorithm = "RSA"
 }
 
-resource "aws_key_pair" "deployer" {
+resource "aws_key_pair" "bastion" {
   key_name   = "bastion"
-  public_key = tls_private_key.my_key.public_key_openssh
+  public_key = tls_private_key.bastion.public_key_openssh
 
   provisioner "local-exec" {
     command = <<-EOT
-      echo '${tls_private_key.my_key.private_key_pem}' > aws_keys_pairs.pem
-      chmod 400 aws_keys_pairs.pem
+      echo '${tls_private_key.bastion.private_key_pem}' > bastion.pem
+      chmod 400 bastion.pem
     EOT
   }
 }
@@ -63,7 +63,7 @@ resource "aws_security_group" "bastion" {
 resource "aws_launch_template" "bastion" {
   name = "${var.solution_name}-bastion"
 
-  key_name = aws_key_pair.deployer.key_name
+  key_name = aws_key_pair.bastion.key_name
 
   block_device_mappings {
     device_name = "/dev/sda1"
@@ -87,7 +87,7 @@ resource "aws_launch_template" "bastion" {
     name = aws_iam_instance_profile.bastion.name
   }
 
-  image_id                             = "ami-01a7573bb17a45f12" # data.aws_ami.default.id
+  image_id                             = "ami-01a7573bb17a45f12"
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t3.micro"
 

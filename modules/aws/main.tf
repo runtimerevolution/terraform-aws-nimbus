@@ -95,7 +95,6 @@ module "bastion_host" {
   source = "./modules/bastion_host"
 
   solution_name = var.solution_name
-  # subnets_ids   = module.network.private_subnets_ids
   subnets_ids   = module.network.public_subnets_ids
   vpc_id        = module.network.vpc_id
 }
