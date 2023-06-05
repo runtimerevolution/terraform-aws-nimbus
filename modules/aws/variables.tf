@@ -163,3 +163,9 @@ variable "bastion_ami_id" {
   description = "ID of the AMI to use when creating the bastion host."
   default     = null
 }
+
+variable "bastion_instance_type" {
+  type        = string
+  description = "The size of the EC2 instance to launch for hosting the bastion host."
+  default     = "t3.micro"
+}

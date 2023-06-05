@@ -8,6 +8,11 @@ variable "ami_id" {
   description = "ID of the AMI to use when creating the bastion host."
 }
 
+variable "instance_type" {
+  type        = string
+  description = "The size of the EC2 instance to launch for hosting the bastion host."
+}
+
 variable "subnets_ids" {
   type        = list(string)
   description = "List of subnets IDs to launch the bastion host in."

@@ -84,7 +84,7 @@ resource "aws_launch_template" "bastion" {
 
   image_id                             = coalesce(var.ami_id, data.aws_ami.default.id)
   instance_initiated_shutdown_behavior = "terminate"
-  instance_type                        = "t3.micro"
+  instance_type                        = var.instance_type
 
   network_interfaces {
     security_groups = [aws_security_group.bastion.id]
