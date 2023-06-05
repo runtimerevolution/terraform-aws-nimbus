@@ -2,6 +2,16 @@ variable "solution_name" {
   type = string
 }
 
+variable "enable_custom_domain" {
+  type = bool
+  default = false
+}
+
+variable "domain" {
+  type = string
+  default = null
+}
+
 variable "provider_region" {
   type    = string
   default = "us-east-1"

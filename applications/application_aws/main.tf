@@ -25,14 +25,15 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  solution_name     = "kyoto"
-  provider_region   = local.provider_region
-  from_port         = 80
-  to_port           = 3000
-  containers        = local.containers
-  ecs_launch_type   = "EC2"
-  ec2_instance_type = "t3.medium"
-  ami_id            = "ami-01a7573bb17a45f12"
+  solution_name        = "kyoto"
+  enable_custom_domain = true
+  domain               = "kyoto-tm.pt"
+  provider_region      = local.provider_region
+  from_port            = 80
+  to_port              = 3000
+  containers           = local.containers
+  ecs_launch_type      = "EC2"
+  ec2_instance_type    = "t3.medium"
 }
 
 # Deploy static website
