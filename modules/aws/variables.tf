@@ -81,3 +81,9 @@ variable "ec2_health_check_type" {
   type    = string
   default = "EC2"
 }
+
+variable "ami_id" {
+  type        = string
+  description = "ID of the AMI to use when creating EC2 instances. Documentation on how to check the available AMIs: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html"
+  default     = null
+}
