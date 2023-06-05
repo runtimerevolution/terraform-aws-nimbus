@@ -116,56 +116,6 @@ variable "ec2_health_check_type" {
   }
 }
 
-variable "vpc_cidr_block" {
-  type    = string
-  default = "10.32.0.0/16"
-}
-
-variable "public_subnets_count" {
-  type    = number
-  default = 2
-}
-
-variable "private_subnets_count" {
-  type    = number
-  default = 2
-}
-
-variable "from_port" {
-  type    = number
-  default = 80
-}
-
-variable "to_port" {
-  type    = number
-  default = 80
-}
-
-variable "containers" {
-  type    = any
-  default = {}
-}
-
-variable "ecs_launch_type" {
-  type    = string
-  default = "FARGATE"
-}
-
-variable "ec2_instance_type" {
-  type    = string
-  default = "t3.micro"
-}
-
-variable "ec2_health_check_grace_period" {
-  type    = number
-  default = 300
-}
-
-variable "ec2_health_check_type" {
-  type    = string
-  default = "EC2"
-}
-
 variable "ami_id" {
   type        = string
   description = "ID of the AMI to use when creating EC2 instances. Documentation on how to check the available AMIs: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html"
