@@ -32,10 +32,15 @@ module "ecs" {
 
   source = "./modules/ecs"
 
-  solution_name     = var.solution_name
-  vpc_id            = module.network.vpc_id
-  load_balancer_id  = module.load_balancer.load_balancer_id
-  security_group_id = module.network.security_group_id
-  subnets_ids       = module.network.private_subnets_ids
-  containers        = var.containers
+  solution_name                 = var.solution_name
+  vpc_id                        = module.network.vpc_id
+  load_balancer_id              = module.load_balancer.load_balancer_id
+  security_group_id             = module.network.security_group_id
+  subnets_ids                   = module.network.private_subnets_ids
+  containers                    = var.containers
+  ecs_launch_type               = var.ecs_launch_type
+  ec2_instance_type             = var.ec2_instance_type
+  ec2_health_check_grace_period = var.ec2_health_check_grace_period
+  ec2_health_check_type         = var.ec2_health_check_type
+  ami_id                        = var.ami_id
 }
