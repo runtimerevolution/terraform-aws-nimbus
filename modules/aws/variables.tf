@@ -3,6 +3,17 @@ variable "solution_name" {
   description = "Name of the solution."
 }
 
+variable "environment" {
+  type        = string
+  description = "Application environment type."
+  default     = "Staging"
+
+  validation {
+    condition     = contains(["Staging", "Production"], var.environment)
+    error_message = "Invalid value. Expected 'Staging' or 'Production'."
+  }
+}
+
 variable "enable_custom_domain" {
   type        = bool
   description = "Specifies if DNS entries should be created for the solution resources."
@@ -168,4 +179,10 @@ variable "bastion_instance_type" {
   type        = string
   description = "The size of the EC2 instance to launch for hosting the bastion host."
   default     = "t3.micro"
+}
+
+variable "enable_secrets_manager" {
+  type        = string
+  description = "Specifies if secrets manager should be used to store sensible data."
+  default     = "false"
 }
