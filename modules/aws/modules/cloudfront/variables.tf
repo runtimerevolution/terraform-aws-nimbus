@@ -13,14 +13,14 @@ variable "domain" {
   description = "The base domain for the solution."
 }
 
+variable "public_dns" {
+  type        = string
+  description = "DNS domain name of the application origin"
+}
+
 variable "cloudfront_default_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
-}
-
-variable "cloudfront_origin_id" {
-  type        = string
-  description = "Origin id for the Cloudfront distribution."
 }
 
 variable "cloudfront_price_class" {

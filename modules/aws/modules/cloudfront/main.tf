@@ -15,21 +15,20 @@ locals {
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
 
 # -----------------------------------------------------------------------------
-# Create a S3 bucket to host the static website
+# Create a S3 bucket to store logs
 # -----------------------------------------------------------------------------
-module "static_website_bucket" {
+module "bucket_cloudfront" {
   source = "../s3_bucket"
 
-  bucket_name        = "${var.solution_name}-static-website"
-  bucket_policy_json = data.aws_iam_policy_document.bucket_policy_document.json
-
-  depends_on = [aws_cloudfront_origin_access_identity.origin_access_identity]
+  bucket_name        = "${var.solution_name}-cloudfront"
+  bucket_acl         = "log-delivery-write"
+  bucket_policy_json = data.aws_iam_policy_document.logging_bucket.json
 }
 
 resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   origin {
-    domain_name = module.static_website_bucket.bucket.bucket_regional_domain_name
-    origin_id   = var.cloudfront_origin_id
+    domain_name = var.public_dns
+    origin_id   = var.public_dns
 
     s3_origin_config {
       origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
@@ -44,14 +43,14 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
 
   logging_config {
     include_cookies = false
-    bucket          = module.static_website_bucket.bucket.bucket_domain_name
+    bucket          = module.bucket_cloudfront.bucket.bucket_domain_name
     prefix          = "logs/"
   }
 
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.cloudfront_origin_id
+    target_origin_id = var.public_dns
 
     forwarded_values {
       query_string = false
@@ -81,8 +80,6 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     acm_certificate_arn            = local.certificate.acm_certificate_arn
     ssl_support_method             = local.certificate.ssl_support_method
   }
-
-  depends_on = [module.static_website_bucket]
 }
 
 # -----------------------------------------------------------------------------
