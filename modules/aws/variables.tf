@@ -21,7 +21,7 @@ variable "provider_region" {
   default     = "us-east-1"
 }
 
-variable "cloudfront_default_root_object" {
+variable "cloudfront_static_website_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
   default     = "website/index.html"

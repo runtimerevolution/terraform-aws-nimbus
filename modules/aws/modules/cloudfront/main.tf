@@ -30,16 +30,23 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     domain_name = var.public_dns
     origin_id   = var.public_dns
 
-    s3_origin_config {
-      origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+    # s3_origin_config {
+    #   origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+    # }
+
+    custom_origin_config {
+      http_port              = "80"
+      https_port             = "443"
+      origin_protocol_policy = var.acm_certificate_arn == null ? "http-only" : "https-only"
+      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
     }
   }
 
   aliases = local.aliases
 
-  enabled             = true
-  is_ipv6_enabled     = true
-  default_root_object = var.cloudfront_default_root_object
+  enabled         = true
+  is_ipv6_enabled = true
+  default_root_object = var.cloudfront_static_website_root_object
 
   logging_config {
     include_cookies = false

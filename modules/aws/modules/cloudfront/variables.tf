@@ -18,7 +18,7 @@ variable "public_dns" {
   description = "DNS domain name of the application origin"
 }
 
-variable "cloudfront_default_root_object" {
+variable "cloudfront_static_website_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
 }
