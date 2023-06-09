@@ -21,6 +21,18 @@ variable "provider_region" {
   default     = "us-east-1"
 }
 
+variable "enable_static_website" {
+  type        = bool
+  description = "Enables/disables serving a static website hosted in a AWS S3 bucket."
+  default     = false
+}
+
+variable "enable_ecs" {
+  type        = bool
+  description = "Enables/disables using ECS to host containers."
+  default     = false
+}
+
 variable "cloudfront_static_website_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."

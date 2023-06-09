@@ -1,3 +1,5 @@
+resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
+
 locals {
   certificate = {
     cloudfront_default_certificate = !var.enable_custom_domain
@@ -10,9 +12,35 @@ locals {
   }
 
   aliases = var.enable_custom_domain ? [var.domain, "www.${var.domain}"] : []
-}
 
-resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
+  static_website_origin_id = "s3"
+  load_balancer_origin_id  = "lb"
+
+  static_website_origin = var.static_website_url == null ? {} : {
+    static_website_origin = {
+      id          = local.static_website_origin_id
+      domain_name = var.static_website_url
+      s3_origin_config = {
+        origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
+      }
+    }
+  }
+
+  load_balancer_origin = var.load_balancer_url == null ? {} : {
+    load_balancer_origin = {
+      id          = local.load_balancer_origin_id
+      domain_name = var.load_balancer_url
+      custom_origin_config = {
+        http_port              = 80
+        https_port             = 443
+        origin_protocol_policy = var.acm_certificate_arn == null ? "http-only" : "https-only"
+        origin_ssl_protocols   = ["TLSv1.2"]
+      }
+    }
+  }
+
+  origins = merge(local.static_website_origin, local.load_balancer_origin)
+}
 
 # -----------------------------------------------------------------------------
 # Create a S3 bucket to store logs
@@ -26,27 +54,39 @@ module "bucket_cloudfront" {
 }
 
 resource "aws_cloudfront_distribution" "cloudfront_distribution" {
-  origin {
-    domain_name = var.public_dns
-    origin_id   = var.public_dns
+  dynamic "origin" {
+    for_each = local.origins
 
-    # s3_origin_config {
-    #   origin_access_identity = aws_cloudfront_origin_access_identity.origin_access_identity.cloudfront_access_identity_path
-    # }
+    content {
+      domain_name = origin.value.domain_name
+      origin_id   = origin.value.id
 
-    custom_origin_config {
-      http_port              = "80"
-      https_port             = "443"
-      origin_protocol_policy = var.acm_certificate_arn == null ? "http-only" : "https-only"
-      origin_ssl_protocols   = ["TLSv1", "TLSv1.1", "TLSv1.2"]
+      dynamic "s3_origin_config" {
+        for_each = length(keys(lookup(origin.value, "s3_origin_config", {}))) == 0 ? [] : [lookup(origin.value, "s3_origin_config", {})]
+
+        content {
+          origin_access_identity = s3_origin_config.value.origin_access_identity
+        }
+      }
+
+      dynamic "custom_origin_config" {
+        for_each = length(keys(lookup(origin.value, "custom_origin_config", {}))) == 0 ? [] : [lookup(origin.value, "custom_origin_config", {})]
+
+        content {
+          http_port              = custom_origin_config.value.http_port
+          https_port             = custom_origin_config.value.https_port
+          origin_protocol_policy = custom_origin_config.value.origin_protocol_policy
+          origin_ssl_protocols   = custom_origin_config.value.origin_ssl_protocols
+        }
+      }
     }
   }
 
   aliases = local.aliases
 
-  enabled         = true
-  is_ipv6_enabled = true
-  default_root_object = var.cloudfront_static_website_root_object
+  enabled             = true
+  is_ipv6_enabled     = true
+  default_root_object = var.static_website_url != null ? var.cloudfront_static_website_root_object : null
 
   logging_config {
     include_cookies = false
@@ -57,20 +97,39 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   default_cache_behavior {
     allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
     cached_methods   = ["GET", "HEAD"]
-    target_origin_id = var.public_dns
+    target_origin_id = var.static_website_url != null ? local.static_website_origin_id : local.load_balancer_origin_id
 
     forwarded_values {
       query_string = false
-
       cookies {
         forward = "none"
       }
     }
 
-    viewer_protocol_policy = "allow-all"
-    min_ttl                = 0
     default_ttl            = 3600
+    min_ttl                = 0
     max_ttl                = 86400
+    viewer_protocol_policy = "redirect-to-https"
+  }
+
+  ordered_cache_behavior {
+    path_pattern     = "/api/*"
+    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+    cached_methods   = ["GET", "HEAD"]
+    target_origin_id = "lb"
+
+    default_ttl = 0
+    min_ttl     = 0
+    max_ttl     = 0
+
+    forwarded_values {
+      query_string = true
+      cookies {
+        forward = "all"
+      }
+    }
+
+    viewer_protocol_policy = "redirect-to-https"
   }
 
   price_class = var.cloudfront_price_class

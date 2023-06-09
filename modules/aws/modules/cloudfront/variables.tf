@@ -13,9 +13,14 @@ variable "domain" {
   description = "The base domain for the solution."
 }
 
-variable "public_dns" {
+variable "static_website_url" {
   type        = string
-  description = "DNS domain name of the application origin"
+  description = "Public URL of the S3 bucket hosting the static website."
+}
+
+variable "load_balancer_url" {
+  type        = string
+  description = "Public URL of the load balancer."
 }
 
 variable "cloudfront_static_website_root_object" {

@@ -17,6 +17,8 @@ module "route53" {
 # Static website
 # -----------------------------------------------------------------------------
 module "static_website_bucket" {
+  count = var.enable_static_website ? 1 : 0
+
   source = "./modules/s3_bucket"
 
   bucket_name        = "${var.solution_name}-static-website"
@@ -42,6 +44,8 @@ module "network" {
 # Setup a load balancer
 # -----------------------------------------------------------------------------
 module "load_balancer" {
+  count = var.enable_ecs ? 1 : 0
+
   source = "./modules/load_balancer"
 
   solution_name        = var.solution_name
@@ -56,13 +60,14 @@ module "load_balancer" {
 # ECS cluster and services
 # -----------------------------------------------------------------------------
 module "ecs" {
-  count = length(var.containers) > 0 ? 1 : 0
+  # count = length(var.containers) > 0 ? 1 : 0
+  count = var.enable_ecs ? 1 : 0
 
   source = "./modules/ecs"
 
   solution_name                 = var.solution_name
   vpc_id                        = module.network.vpc_id
-  load_balancer_id              = module.load_balancer.load_balancer_id
+  load_balancer_id              = module.load_balancer[0].load_balancer_id
   security_group_id             = module.network.security_group_id
   subnets_ids                   = module.network.private_subnets_ids
   containers                    = var.containers
@@ -79,11 +84,11 @@ module "ecs" {
 module "cloudfront" {
   source = "./modules/cloudfront"
 
-  solution_name        = var.solution_name
-  enable_custom_domain = var.enable_custom_domain
-  domain               = var.domain
-  # public_dns                     = module.static_website_bucket.bucket.bucket_regional_domain_name
-  public_dns                            = module.load_balancer.load_balancer_dns_name
+  solution_name                         = var.solution_name
+  enable_custom_domain                  = var.enable_custom_domain
+  domain                                = var.domain
+  static_website_url                    = module.static_website_bucket[0].bucket.bucket_regional_domain_name
+  load_balancer_url                     = module.load_balancer[0].load_balancer_dns_name
   cloudfront_static_website_root_object = var.cloudfront_static_website_root_object
   cloudfront_price_class                = var.cloudfront_price_class
   acm_certificate_arn                   = var.enable_custom_domain ? module.route53[0].acm_certificate_arn : null
