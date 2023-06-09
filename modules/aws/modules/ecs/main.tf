@@ -45,5 +45,6 @@ module "ecs_container" {
   cpu            = each.value.cpu
   memory         = each.value.memory
   port           = each.value.port
+  path_pattern   = lookup(each.value, "path_pattern", null)
   instance_count = each.value.instance_count
 }

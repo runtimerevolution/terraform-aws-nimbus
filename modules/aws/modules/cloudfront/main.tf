@@ -112,24 +112,28 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     viewer_protocol_policy = "redirect-to-https"
   }
 
-  ordered_cache_behavior {
-    path_pattern     = "/api/*"
-    allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
-    cached_methods   = ["GET", "HEAD"]
-    target_origin_id = "lb"
+  dynamic "ordered_cache_behavior" {
+    for_each = var.path_patterns
 
-    default_ttl = 0
-    min_ttl     = 0
-    max_ttl     = 0
+    content {
+      path_pattern     = ordered_cache_behavior.value
+      allowed_methods  = ["DELETE", "GET", "HEAD", "OPTIONS", "PATCH", "POST", "PUT"]
+      cached_methods   = ["GET", "HEAD"]
+      target_origin_id = local.load_balancer_origin_id
 
-    forwarded_values {
-      query_string = true
-      cookies {
-        forward = "all"
+      default_ttl = 0
+      min_ttl     = 0
+      max_ttl     = 0
+
+      forwarded_values {
+        query_string = true
+        cookies {
+          forward = "all"
+        }
       }
-    }
 
-    viewer_protocol_policy = "redirect-to-https"
+      viewer_protocol_policy = "redirect-to-https"
+    }
   }
 
   price_class = var.cloudfront_price_class

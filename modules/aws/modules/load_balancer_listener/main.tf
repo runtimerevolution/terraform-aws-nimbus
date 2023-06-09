@@ -18,6 +18,8 @@ resource "aws_lb_listener" "listener" {
 }
 
 resource "aws_lb_listener_rule" "static" {
+  count = var.path_pattern != null ? 1 : 0
+
   listener_arn = aws_lb_listener.listener.arn
 
   action {
@@ -27,7 +29,7 @@ resource "aws_lb_listener_rule" "static" {
 
   condition {
     path_pattern {
-      values = ["/api/*"]
+      values = [var.path_pattern]
     }
   }
 }

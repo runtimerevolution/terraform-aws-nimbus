@@ -30,6 +30,7 @@ variable "containers" {
     cpu            = number
     memory         = number
     port           = number
+    path_pattern   = optional(string)
     instance_count = number
   }))
   description = "Containers instances to be deployed."

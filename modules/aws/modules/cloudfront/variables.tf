@@ -28,6 +28,11 @@ variable "cloudfront_static_website_root_object" {
   description = "Object CloudFront must return to return when an end user requests the root URL."
 }
 
+variable "path_patterns" {
+  type        = list(string)
+  description = "Path patterns that specifies which requests to apply a cache behavior."
+}
+
 variable "cloudfront_price_class" {
   type        = string
   description = "Price class for the Cloudfront distribution."

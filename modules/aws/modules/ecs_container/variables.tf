@@ -67,3 +67,8 @@ variable "memory" {
   type        = number
   description = "Amount (in MiB) of memory used by the task."
 }
+
+variable "path_pattern" {
+  type        = string
+  description = "Path pattern to match and forward the request to the listener target group"
+}
