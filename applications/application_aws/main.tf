@@ -54,6 +54,7 @@ module "application_aws" {
   enable_bastion_host   = true
   enable_static_website = true
   enable_ecs            = true
+  enable_secrets_manager = true
 }
 
 # Deploy static website

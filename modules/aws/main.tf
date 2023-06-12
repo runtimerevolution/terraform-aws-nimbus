@@ -104,10 +104,12 @@ module "databases" {
 
   source = "./modules/databases"
 
-  solution_name     = var.solution_name
-  subnets_ids       = module.network.private_subnets_ids
-  security_group_id = module.network.security_group_id
-  databases         = var.databases
+  solution_name          = var.solution_name
+  environment            = var.environment
+  subnets_ids            = module.network.private_subnets_ids
+  security_group_id      = module.network.security_group_id
+  databases              = var.databases
+  enable_secrets_manager = var.enable_secrets_manager
 }
 
 module "bastion_host" {
@@ -115,9 +117,11 @@ module "bastion_host" {
 
   source = "./modules/bastion_host"
 
-  solution_name = var.solution_name
-  ami_id        = var.bastion_ami_id
-  instance_type = var.bastion_instance_type
-  subnets_ids   = module.network.public_subnets_ids
-  vpc_id        = module.network.vpc_id
+  solution_name          = var.solution_name
+  environment            = var.environment
+  ami_id                 = var.bastion_ami_id
+  instance_type          = var.bastion_instance_type
+  subnets_ids            = module.network.public_subnets_ids
+  vpc_id                 = module.network.vpc_id
+  enable_secrets_manager = var.enable_secrets_manager
 }
