@@ -86,7 +86,7 @@ module "cloudfront" {
   solution_name                         = var.solution_name
   enable_custom_domain                  = var.enable_custom_domain
   domain                                = var.domain
-  static_website_url                    = var.enable_static_website ? module.static_website_bucket[0].bucket.bucket_regional_domain_name : null
+  static_website_url                    = var.enable_static_website ? module.static_website_bucket[0].bucket_regional_domain_name : null
   load_balancer_url                     = var.enable_ecs ? module.load_balancer[0].load_balancer_dns_name : null
   cloudfront_static_website_root_object = var.cloudfront_static_website_root_object
   path_patterns                         = compact([for c in var.containers : lookup(c, "path_pattern", null)])

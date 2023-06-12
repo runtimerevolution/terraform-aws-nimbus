@@ -1,5 +1,5 @@
 output "static_website_bucket_endpoint" {
-  value       = var.enable_static_website ? module.static_website_bucket[0].bucket.bucket_regional_domain_name : null
+  value       = var.enable_static_website ? module.static_website_bucket[0].bucket_regional_domain_name : null
   description = "Static website S3 bucket URL."
 }
 
