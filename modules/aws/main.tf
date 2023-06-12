@@ -60,7 +60,6 @@ module "load_balancer" {
 # ECS cluster and services
 # -----------------------------------------------------------------------------
 module "ecs" {
-  # count = length(var.containers) > 0 ? 1 : 0
   count = var.enable_ecs ? 1 : 0
 
   source = "./modules/ecs"
@@ -87,8 +86,8 @@ module "cloudfront" {
   solution_name                         = var.solution_name
   enable_custom_domain                  = var.enable_custom_domain
   domain                                = var.domain
-  static_website_url                    = module.static_website_bucket[0].bucket.bucket_regional_domain_name
-  load_balancer_url                     = module.load_balancer[0].load_balancer_dns_name
+  static_website_url                    = var.enable_static_website ? module.static_website_bucket[0].bucket.bucket_regional_domain_name : null
+  load_balancer_url                     = var.enable_ecs ? module.load_balancer[0].load_balancer_dns_name : null
   cloudfront_static_website_root_object = var.cloudfront_static_website_root_object
   path_patterns                         = compact([for c in var.containers : lookup(c, "path_pattern", null)])
   cloudfront_price_class                = var.cloudfront_price_class
