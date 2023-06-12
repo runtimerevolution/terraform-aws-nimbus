@@ -34,36 +34,21 @@ locals {
   ]
 }
 
-provider "aws" {
-  region = local.provider_region
-}
-
 module "application_aws" {
   source = "../../modules/aws"
 
-  solution_name         = "kyoto"
-  enable_custom_domain  = true
-  domain                = "kyoto-tm.pt"
-  provider_region       = local.provider_region
-  from_port             = 80
-  to_port               = 5432
-  containers            = local.containers
-  ecs_launch_type       = "EC2"
-  ec2_instance_type     = "t3.medium"
-  databases             = local.databases
-  enable_bastion_host   = true
-  enable_static_website = true
-  enable_ecs            = true
+  solution_name          = "kyoto"
+  enable_custom_domain   = true
+  domain                 = "kyoto-tm.pt"
+  provider_region        = local.provider_region
+  from_port              = 80
+  to_port                = 5432
+  containers             = local.containers
+  ecs_launch_type        = "EC2"
+  ec2_instance_type      = "t3.medium"
+  databases              = local.databases
+  enable_bastion_host    = true
+  enable_static_website  = true
+  enable_ecs             = true
   enable_secrets_manager = true
-}
-
-# Deploy static website
-resource "aws_s3_object" "website" {
-  for_each = fileset("../../website/", "*")
-
-  bucket       = module.application_aws.static_website_bucket.id
-  key          = "website/${each.value}"
-  source       = "../../website/${each.value}"
-  content_type = "text/html"
-  etag         = filemd5("../../website/${each.value}")
 }

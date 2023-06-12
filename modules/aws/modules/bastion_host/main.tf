@@ -54,7 +54,6 @@ resource "aws_security_group" "bastion" {
   }
 }
 
-
 resource "aws_launch_template" "bastion" {
   name = "${var.solution_name}-bastion"
 
