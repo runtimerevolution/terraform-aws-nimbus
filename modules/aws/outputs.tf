@@ -15,5 +15,5 @@ output "cloudfront_endpoint" {
 
 output "databases_endpoints" {
   value       = length(var.databases) > 0 ? module.databases[0].databases_endpoints : null
-  description = "Databases URLs"
+  description = "Databases URLs."
 }
