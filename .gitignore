@@ -7,3 +7,5 @@
 *.lock.hcl
 
 *.pem
+
+*.tfvars
