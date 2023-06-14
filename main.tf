@@ -1,7 +1,10 @@
-module "application_aws" {
+module "root" {
   source = "./modules/aws"
 
-  solution_name          = var.solution_name
+  # Project settings
+  solution_name = var.solution_name
+
+  # Cloud settings
   enable_custom_domain   = var.enable_custom_domain
   domain                 = var.domain
   provider_region        = var.provider_region
