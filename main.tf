@@ -1,4 +1,4 @@
-module "root" {
+module "terraform_multicloud" {
   source = "./modules/aws"
 
   # Project settings

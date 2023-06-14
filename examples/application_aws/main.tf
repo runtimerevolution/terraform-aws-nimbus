@@ -34,7 +34,7 @@ locals {
   ]
 }
 
-module "application_aws" {
+module "terraform_aws" {
   source = "../.."
 
   solution_name          = "kyoto"
