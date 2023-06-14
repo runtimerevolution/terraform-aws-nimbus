@@ -1,21 +1,23 @@
 locals {
   provider_region = "eu-north-1"
-  containers = {
-    "hello-world" : {
-      container_image  = "registry.gitlab.com/architect-io/artifacts/nodejs-hello-world:latest"
-      container_cpu    = 1024
-      container_memory = 2048
-      container_port   = 3000
-      instance_count   = 2
+  containers = [
+    {
+      "name"           = "hello-world"
+      "image"          = "registry.gitlab.com/architect-io/artifacts/nodejs-hello-world:latest"
+      "cpu"            = 1024
+      "memory"         = 2048
+      "port"           = 3000
+      "instance_count" = 2
     },
-    "nginx" : {
-      container_image  = "nginx:latest"
-      container_cpu    = 1024
-      container_memory = 2048
-      container_port   = 80
-      instance_count   = 2
+    {
+      "name"           = "nginx"
+      "image"          = "nginx:latest"
+      "cpu"            = 1024
+      "memory"         = 2048
+      "port"           = 80
+      "instance_count" = 2
     }
-  }
+  ]
 }
 
 provider "aws" {

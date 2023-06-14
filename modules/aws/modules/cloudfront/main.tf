@@ -2,7 +2,11 @@ locals {
   certificate = {
     cloudfront_default_certificate = !var.enable_custom_domain
     acm_certificate_arn            = var.enable_custom_domain ? var.acm_certificate_arn : null
-    ssl_support_method             = var.enable_custom_domain ? "sni-only" : null
+
+    # As recommended in the AWS documentation, when using custom domains set 
+    # 'ssl_support_method' as 'sni-only' to accept HTTPS connections only from 
+    # browsers and clients that support server name indication, which most do.
+    ssl_support_method = var.enable_custom_domain ? "sni-only" : null
   }
 
   aliases = var.enable_custom_domain ? [var.domain, "www.${var.domain}"] : []
@@ -10,6 +14,9 @@ locals {
 
 resource "aws_cloudfront_origin_access_identity" "origin_access_identity" {}
 
+# -----------------------------------------------------------------------------
+# Create a S3 bucket to host the static website
+# -----------------------------------------------------------------------------
 module "static_website_bucket" {
   source = "../s3_bucket"
 
@@ -78,7 +85,10 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
   depends_on = [module.static_website_bucket]
 }
 
-resource "aws_route53_record" "route53" {
+# -----------------------------------------------------------------------------
+# Create a alias for the distribution in Route53
+# -----------------------------------------------------------------------------
+resource "aws_route53_record" "alias" {
   for_each = toset(local.aliases)
 
   zone_id = var.route53_zone_id

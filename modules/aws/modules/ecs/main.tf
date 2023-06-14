@@ -6,6 +6,9 @@ locals {
   instance_count = sum([for container in var.containers : container["instance_count"]])
 }
 
+# -----------------------------------------------------------------------------
+# If launch type is 'EC2', setup an AWS autoscaling group 
+# -----------------------------------------------------------------------------
 module "ec2" {
   count = var.ecs_launch_type == "EC2" ? 1 : 0
 
@@ -18,14 +21,14 @@ module "ec2" {
   security_group_id             = var.security_group_id
   subnets_ids                   = var.subnets_ids
   capacity                      = local.instance_count
-  capacity_min                  = length(keys(var.containers))
+  capacity_min                  = length(var.containers)
   capacity_max                  = local.instance_count
   ec2_health_check_grace_period = var.ec2_health_check_grace_period
   ec2_health_check_type         = var.ec2_health_check_type
 }
 
 module "ecs_container" {
-  for_each = var.containers
+  for_each = { for c in var.containers : c.name => c }
 
   source = "../ecs_container"
 
@@ -37,10 +40,10 @@ module "ecs_container" {
   subnet_ids        = var.subnets_ids
   launch_type       = var.ecs_launch_type
 
-  container_name   = each.key
-  instance_count   = each.value.instance_count
-  container_image  = each.value.container_image
-  container_cpu    = each.value.container_cpu
-  container_memory = each.value.container_memory
-  container_port   = each.value.container_port
+  name           = each.value.name
+  image          = each.value.image
+  cpu            = each.value.cpu
+  memory         = each.value.memory
+  port           = each.value.port
+  instance_count = each.value.instance_count
 }
