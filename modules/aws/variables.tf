@@ -85,12 +85,6 @@ variable "cloudfront_path_patterns" {
   default     = []
 }
 
-variable "cloudfront_origin_id" {
-  type        = string
-  description = "Origin id for the Cloudfront distribution."
-  default     = "s3-origin"
-}
-
 variable "cloudfront_price_class" {
   type        = string
   description = "Price class for the Cloudfront distribution."

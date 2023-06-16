@@ -17,7 +17,6 @@ module "terraform_multicloud" {
   cloudfront_custom_origin_protocol_policy = var.cloudfront_custom_origin_protocol_policy
   cloudfront_custom_origin_ssl_protocols   = var.cloudfront_custom_origin_ssl_protocols
   cloudfront_path_patterns                 = var.cloudfront_path_patterns
-  cloudfront_origin_id                     = var.cloudfront_origin_id
   cloudfront_price_class                   = var.cloudfront_price_class
   vpc_cidr_block                           = var.vpc_cidr_block
   public_subnets_count                     = var.public_subnets_count
