@@ -8,7 +8,6 @@ locals {
       cpu            = 256
       memory         = 512
       port           = 80
-      path_pattern   = "/app/*"
       instance_count = 2
     },
     {
@@ -41,20 +40,21 @@ provider "aws" {
 module "application_aws" {
   source = "../../modules/aws"
 
-  solution_name         = "kyoto"
-  enable_custom_domain  = true
-  domain                = "kyoto-tm.pt"
-  provider_region       = local.provider_region
-  from_port             = 80
-  to_port               = 5432
-  containers            = local.containers
-  ecs_launch_type       = "EC2"
-  ec2_instance_type     = "t3.medium"
-  databases             = local.databases
-  enable_bastion_host   = true
-  enable_static_website = true
-  enable_ecs            = true
-  enable_secrets_manager = true
+  solution_name            = "kyoto"
+  enable_custom_domain     = true
+  domain                   = "kyoto-tm.pt"
+  provider_region          = local.provider_region
+  from_port                = 80
+  to_port                  = 5432
+  containers               = local.containers
+  ecs_launch_type          = "EC2"
+  ec2_instance_type        = "t3.medium"
+  databases                = local.databases
+  enable_bastion_host      = true
+  enable_static_website    = true
+  enable_ecs               = true
+  enable_secrets_manager   = true
+  cloudfront_path_patterns = ["/app/*"]
 }
 
 # Deploy static website

@@ -31,10 +31,10 @@ locals {
       id          = local.load_balancer_origin_id
       domain_name = var.load_balancer_url
       custom_origin_config = {
-        http_port              = 80
-        https_port             = 443
-        origin_protocol_policy = var.acm_certificate_arn == null ? "http-only" : "https-only"
-        origin_ssl_protocols   = ["TLSv1.2"]
+        http_port              = var.custom_origin_http_port
+        https_port             = var.custom_origin_https_port
+        origin_protocol_policy = var.custom_origin_protocol_policy
+        origin_ssl_protocols   = var.custom_origin_ssl_protocols
       }
     }
   }
