@@ -106,17 +106,3 @@ module "bastion_host" {
   subnets_ids   = module.network.public_subnets_ids
   vpc_id        = module.network.vpc_id
 }
-
-# -----------------------------------------------------------------------------
-# Databases
-# -----------------------------------------------------------------------------
-module "databases" {
-  count = length(var.databases) > 0 ? 1 : 0
-
-  source = "./modules/databases"
-
-  solution_name     = var.solution_name
-  subnets_ids       = module.network.private_subnets_ids
-  security_group_id = module.network.security_group_id
-  databases         = var.databases
-}
