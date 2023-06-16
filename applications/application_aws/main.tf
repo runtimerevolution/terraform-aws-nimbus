@@ -20,7 +20,7 @@ locals {
   ]
   databases = [
     {
-      "engine"              = "postgres"
+      "engine"              = "mysql"
       "password"            = "password"
       "skip_final_snapshot" = true
     },
