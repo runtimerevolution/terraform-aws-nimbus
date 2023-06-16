@@ -5,3 +5,5 @@
 *.tfstate
 *.tfstate.*
 *.lock.hcl
+
+*.pem

@@ -75,7 +75,7 @@ module "ecs" {
   ec2_instance_type             = var.ec2_instance_type
   ec2_health_check_grace_period = var.ec2_health_check_grace_period
   ec2_health_check_type         = var.ec2_health_check_type
-  ami_id                        = var.ami_id
+  ami_id                        = var.ec2_ami_id
 }
 
 # -----------------------------------------------------------------------------
@@ -90,4 +90,19 @@ module "databases" {
   subnets_ids       = module.network.private_subnets_ids
   security_group_id = module.network.security_group_id
   databases         = var.databases
+}
+
+# -----------------------------------------------------------------------------
+# Bastion host to access resources in private subnets through a SSH tunnel
+# -----------------------------------------------------------------------------
+module "bastion_host" {
+  count = var.enable_bastion_host ? 1 : 0
+
+  source = "./modules/bastion_host"
+
+  solution_name = var.solution_name
+  ami_id        = var.bastion_ami_id
+  instance_type = var.bastion_instance_type
+  subnets_ids   = module.network.public_subnets_ids
+  vpc_id        = module.network.vpc_id
 }

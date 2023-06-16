@@ -116,7 +116,7 @@ variable "ec2_health_check_type" {
   }
 }
 
-variable "ami_id" {
+variable "ec2_ami_id" {
   type        = string
   description = "ID of the AMI to use when creating EC2 instances. Documentation on how to check the available AMIs: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html"
   default     = null
@@ -150,4 +150,22 @@ variable "databases" {
   )
   description = "Databases instances to deploy. Explanation for each parameter can be found here: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#argument-reference"
   default     = []
+}
+
+variable "enable_bastion_host" {
+  type        = bool
+  description = "Specifies if a bastion host to access private resources through SSH should be created."
+  default     = false
+}
+
+variable "bastion_ami_id" {
+  type        = string
+  description = "ID of the AMI to use when creating the bastion host."
+  default     = null
+}
+
+variable "bastion_instance_type" {
+  type        = string
+  description = "The size of the EC2 instance to launch for hosting the bastion host."
+  default     = "t3.micro"
 }
