@@ -18,6 +18,18 @@ locals {
       "instance_count" = 2
     }
   ]
+  databases = [
+    {
+      "engine"              = "mysql"
+      "password"            = "password"
+      "skip_final_snapshot" = true
+    },
+    {
+      "engine"              = "mysql"
+      "password"            = "password"
+      "skip_final_snapshot" = true
+    }
+  ]
 }
 
 provider "aws" {
@@ -36,6 +48,7 @@ module "application_aws" {
   containers           = local.containers
   ecs_launch_type      = "EC2"
   ec2_instance_type    = "t3.medium"
+  databases            = local.databases
 }
 
 # Deploy static website

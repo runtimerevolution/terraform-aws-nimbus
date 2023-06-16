@@ -121,3 +121,33 @@ variable "ami_id" {
   description = "ID of the AMI to use when creating EC2 instances. Documentation on how to check the available AMIs: https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/finding-an-ami.html"
   default     = null
 }
+
+variable "databases" {
+  type = list(
+    object({
+      identifier                      = optional(string)
+      allocated_storage               = optional(number)
+      max_allocated_storage           = optional(number)
+      instance_class                  = optional(string)
+      engine                          = string
+      engine_version                  = optional(string)
+      db_name                         = optional(string)
+      username                        = optional(string)
+      password                        = optional(string)
+      port                            = optional(number)
+      multi_az                        = optional(bool)
+      backup_retention_period         = optional(number)
+      backup_window                   = optional(string)
+      maintenance_window              = optional(string)
+      deletion_protection             = optional(bool)
+      enabled_cloudwatch_logs_exports = optional(list(string))
+      storage_encrypted               = optional(bool)
+      storage_type                    = optional(string)
+      skip_final_snapshot             = optional(bool)
+      final_snapshot_identifier       = optional(bool)
+      publicly_accessible             = optional(bool)
+    })
+  )
+  description = "Databases instances to deploy. Explanation for each parameter can be found here: https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_instance#argument-reference"
+  default     = []
+}

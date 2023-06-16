@@ -77,3 +77,17 @@ module "ecs" {
   ec2_health_check_type         = var.ec2_health_check_type
   ami_id                        = var.ami_id
 }
+
+# -----------------------------------------------------------------------------
+# Databases
+# -----------------------------------------------------------------------------
+module "databases" {
+  count = length(var.databases) > 0 ? 1 : 0
+
+  source = "./modules/databases"
+
+  solution_name     = var.solution_name
+  subnets_ids       = module.network.private_subnets_ids
+  security_group_id = module.network.security_group_id
+  databases         = var.databases
+}
