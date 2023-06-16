@@ -31,10 +31,10 @@ locals {
       id          = local.load_balancer_origin_id
       domain_name = var.load_balancer_url
       custom_origin_config = {
-        http_port              = 80
-        https_port             = 443
-        origin_protocol_policy = var.acm_certificate_arn == null ? "http-only" : "https-only"
-        origin_ssl_protocols   = ["TLSv1.2"]
+        http_port              = var.custom_origin_http_port
+        https_port             = var.custom_origin_https_port
+        origin_protocol_policy = var.custom_origin_protocol_policy
+        origin_ssl_protocols   = var.custom_origin_ssl_protocols
       }
     }
   }
@@ -86,7 +86,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  default_root_object = var.static_website_url != null ? var.cloudfront_static_website_root_object : null
+  default_root_object = var.static_website_url != null ? var.static_website_root_object : null
 
   logging_config {
     include_cookies = false
@@ -136,7 +136,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     }
   }
 
-  price_class = var.cloudfront_price_class
+  price_class = var.price_class
 
   restrictions {
     geo_restriction {

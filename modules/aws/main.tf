@@ -83,16 +83,20 @@ module "ecs" {
 module "cloudfront" {
   source = "./modules/cloudfront"
 
-  solution_name                         = var.solution_name
-  enable_custom_domain                  = var.enable_custom_domain
-  domain                                = var.domain
-  static_website_url                    = var.enable_static_website ? module.static_website_bucket[0].bucket_regional_domain_name : null
-  load_balancer_url                     = var.enable_ecs ? module.load_balancer[0].load_balancer_dns_name : null
-  cloudfront_static_website_root_object = var.cloudfront_static_website_root_object
-  path_patterns                         = compact([for c in var.containers : lookup(c, "path_pattern", null)])
-  cloudfront_price_class                = var.cloudfront_price_class
-  acm_certificate_arn                   = var.enable_custom_domain ? module.route53[0].acm_certificate_arn : null
-  route53_zone_id                       = var.enable_custom_domain ? module.route53[0].zone_id : null
+  solution_name                 = var.solution_name
+  enable_custom_domain          = var.enable_custom_domain
+  domain                        = var.domain
+  static_website_url            = var.enable_static_website ? module.static_website_bucket[0].bucket.bucket_regional_domain_name : null
+  load_balancer_url             = var.enable_ecs ? module.load_balancer[0].load_balancer_dns_name : null
+  static_website_root_object    = var.cloudfront_static_website_root_object
+  custom_origin_http_port       = var.cloudfront_custom_origin_http_port
+  custom_origin_https_port      = var.cloudfront_custom_origin_https_port
+  custom_origin_protocol_policy = var.cloudfront_custom_origin_protocol_policy
+  custom_origin_ssl_protocols   = var.cloudfront_custom_origin_ssl_protocols
+  path_patterns                 = var.cloudfront_path_patterns
+  price_class                   = var.cloudfront_price_class
+  acm_certificate_arn           = var.enable_custom_domain ? module.route53[0].acm_certificate_arn : null
+  route53_zone_id               = var.enable_custom_domain ? module.route53[0].zone_id : null
 }
 
 # -----------------------------------------------------------------------------
