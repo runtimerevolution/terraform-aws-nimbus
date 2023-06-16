@@ -23,7 +23,7 @@ variable "load_balancer_url" {
   description = "Public URL of the load balancer."
 }
 
-variable "cloudfront_static_website_root_object" {
+variable "static_website_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
 }
@@ -33,7 +33,7 @@ variable "path_patterns" {
   description = "Path patterns that specifies which requests to apply a cache behavior."
 }
 
-variable "cloudfront_price_class" {
+variable "price_class" {
   type        = string
   description = "Price class for the Cloudfront distribution."
 }

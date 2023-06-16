@@ -86,7 +86,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
 
   enabled             = true
   is_ipv6_enabled     = true
-  default_root_object = var.static_website_url != null ? var.cloudfront_static_website_root_object : null
+  default_root_object = var.static_website_url != null ? var.static_website_root_object : null
 
   logging_config {
     include_cookies = false
@@ -136,7 +136,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
     }
   }
 
-  price_class = var.cloudfront_price_class
+  price_class = var.price_class
 
   restrictions {
     geo_restriction {

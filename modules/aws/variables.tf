@@ -50,6 +50,12 @@ variable "cloudfront_static_website_root_object" {
   default     = "website/index.html"
 }
 
+variable "cloudfront_path_patterns" {
+  type        = list(string)
+  description = "Path patterns that specifies which requests to apply a cache behavior."
+  default     = []
+}
+
 variable "cloudfront_origin_id" {
   type        = string
   description = "Origin id for the Cloudfront distribution."
