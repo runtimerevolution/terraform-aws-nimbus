@@ -16,4 +16,19 @@ resource "azurerm_cdn_endpoint" "endpoint" {
     name      = "sa"
     host_name = var.storage_account_web_host
   }
+
+  delivery_rule {
+    name  = "EnforceHTTPS"
+    order = "1"
+
+    request_scheme_condition {
+      operator     = "Equal"
+      match_values = ["HTTP"]
+    }
+
+    url_redirect_action {
+      redirect_type = "Found"
+      protocol      = "Https"
+    }
+  }
 }
