@@ -6,5 +6,6 @@ module "terraform_multicloud_azure" {
   environment   = var.environment
 
   # Cloud settings
-  location = var.location
+  location                = var.location
+  static_website_settings = var.static_website_settings
 }

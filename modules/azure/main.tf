@@ -12,10 +12,13 @@ resource "azurerm_resource_group" "resource_group" {
 module "static_website" {
   source = "./modules/storage_account"
 
-  solution_name           = var.solution_name
-  resource_group_name     = azurerm_resource_group.resource_group.name
-  resource_group_location = azurerm_resource_group.resource_group.location
-  static_website = {
+  solution_name                    = var.solution_name
+  resource_group_name              = azurerm_resource_group.resource_group.name
+  resource_group_location          = azurerm_resource_group.resource_group.location
+  storage_account_kind             = "StorageV2"
+  storage_account_tier             = "Standard"
+  storage_account_replication_type = "LRS"
+  static_website_settings = {
     index_document     = "index.html"
     error_404_document = "error.html"
   }
