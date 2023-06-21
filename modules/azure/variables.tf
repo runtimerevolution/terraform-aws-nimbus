@@ -25,3 +25,9 @@ variable "static_website_index_document" {
   description = "The webpage served for requests to the root of the application."
   default     = "index.html"
 }
+
+variable "static_website_error_document" {
+  type        = string
+  description = "The webpage served when the request is not successful."
+  default     = "error.html"
+}
