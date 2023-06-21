@@ -17,5 +17,11 @@ variable "environment" {
 variable "location" {
   type        = string
   description = "Location where resources must be created."
-  default     = "northeurope"
+  default     = "eastus"
+}
+
+variable "static_website_index_document" {
+  type        = string
+  description = "The webpage served for requests to the root of the application."
+  default     = "index.html"
 }
