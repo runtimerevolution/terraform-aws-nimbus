@@ -25,3 +25,22 @@ resource "azurerm_storage_account" "storage_account" {
 # -----------------------------------------------------------------------------
 # CDN
 # -----------------------------------------------------------------------------
+resource "azurerm_cdn_profile" "cdn_profile" {
+  name                = "${var.solution_name}-cdn"
+  location            = azurerm_resource_group.group.location
+  resource_group_name = azurerm_resource_group.group.name
+  sku                 = "Standard_Microsoft"
+}
+
+resource "azurerm_cdn_endpoint" "endpoint" {
+  name                = "${var.solution_name}-endpoint"
+  profile_name        = azurerm_cdn_profile.cdn_profile.name
+  location            = azurerm_resource_group.group.location
+  resource_group_name = azurerm_resource_group.group.name
+  origin_host_header  = azurerm_storage_account.storage_account.primary_web_host
+
+  origin {
+    name      = "${var.solution_name}-static-website"
+    host_name = azurerm_storage_account.storage_account.primary_web_host
+  }
+}
