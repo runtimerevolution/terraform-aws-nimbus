@@ -17,5 +17,5 @@ variable "environment" {
 variable "location" {
   type        = string
   description = "Location where resources must be created."
-  default     = "North Europe"
+  default     = "northeurope"
 }
