@@ -3,6 +3,16 @@ variable "solution_name" {
   description = "Name of the solution"
 }
 
+variable "environment" {
+  type        = string
+  description = "Application environment type"
+
+  validation {
+    condition     = contains(["Staging", "Production"], var.environment)
+    error_message = "Invalid value. Expected 'Staging' or 'Production'."
+  }
+}
+
 variable "subnets_ids" {
   type        = list(string)
   description = "List of subnet IDs to host the databases."
@@ -40,5 +50,9 @@ variable "databases" {
     })
   )
   description = "Databases instances to deploy."
-  default     = []
+}
+
+variable "enable_secrets_manager" {
+  type        = string
+  description = "Specifies if secrets manager should be used to store sensible data."
 }
