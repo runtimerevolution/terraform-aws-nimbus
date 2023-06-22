@@ -25,6 +25,18 @@ module "static_website" {
 }
 
 # -----------------------------------------------------------------------------
+# Virtual network and subnets
+# -----------------------------------------------------------------------------
+module "network" {
+  source = "./modules/network"
+
+  solution_name           = var.solution_name
+  resource_group_name     = azurerm_resource_group.resource_group.name
+  resource_group_location = azurerm_resource_group.resource_group.location
+  vnet_address_space      = var.vnet_address_space
+}
+
+# -----------------------------------------------------------------------------
 # CDN
 # -----------------------------------------------------------------------------
 module "cdn" {
@@ -35,3 +47,4 @@ module "cdn" {
   resource_group_location  = azurerm_resource_group.resource_group.location
   storage_account_web_host = module.static_website.storage_account_web_host
 }
+
