@@ -94,6 +94,9 @@ module "databases" {
   enable_secrets_manager = var.enable_secrets_manager
 }
 
+# -----------------------------------------------------------------------------
+# Bastion host to access resources in private subnets through a SSH tunnel
+# -----------------------------------------------------------------------------
 module "bastion_host" {
   count = var.enable_bastion_host ? 1 : 0
 

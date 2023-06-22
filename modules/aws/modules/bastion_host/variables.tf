@@ -36,5 +36,4 @@ variable "vpc_id" {
 variable "enable_secrets_manager" {
   type        = string
   description = "Specifies if secrets manager should be used to store sensible data."
-  default     = "false"
 }
