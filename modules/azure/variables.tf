@@ -31,8 +31,8 @@ variable "static_website_settings" {
   }
 }
 
-variable "vnet_address_space" {
-  type        = list(string)
-  description = "The address space for the virtual network."
-  default     = ["10.0.0.0/16"]
+variable "vnet_cidr" {
+  type        = string
+  description = "The IPv4 CIDR address for the virtual network."
+  default     = "10.0.0.0/16"
 }

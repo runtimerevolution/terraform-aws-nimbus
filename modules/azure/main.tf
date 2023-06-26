@@ -33,7 +33,33 @@ module "network" {
   solution_name           = var.solution_name
   resource_group_name     = azurerm_resource_group.resource_group.name
   resource_group_location = azurerm_resource_group.resource_group.location
-  vnet_address_space      = var.vnet_address_space
+  vnet_cidr               = var.vnet_cidr
+}
+
+# -----------------------------------------------------------------------------
+# Container Apps
+# -----------------------------------------------------------------------------
+module "container_app_environment" {
+  source = "./modules/container_app_environment"
+
+  solution_name           = var.solution_name
+  resource_group_name     = azurerm_resource_group.resource_group.name
+  resource_group_location = azurerm_resource_group.resource_group.location
+  private_subnet_id       = module.network.private_subnet_id
+}
+
+# -----------------------------------------------------------------------------
+# Application Gateway
+# -----------------------------------------------------------------------------
+module "application_gateway" {
+  source = "./modules/application_gateway"
+
+  solution_name                               = var.solution_name
+  resource_group_name                         = azurerm_resource_group.resource_group.name
+  resource_group_location                     = azurerm_resource_group.resource_group.location
+  public_subnet_id                            = module.network.public_subnet_id
+  container_app_environment_static_ip_address = module.container_app_environment.container_app_environment_static_ip_address
+  container_app_fqdn                          = module.container_app_environment.container_app_fqdn
 }
 
 # -----------------------------------------------------------------------------

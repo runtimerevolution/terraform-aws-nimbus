@@ -8,5 +8,5 @@ module "terraform_multicloud_azure" {
   # Cloud settings
   location                = var.location
   static_website_settings = var.static_website_settings
-  vnet_address_space      = var.vnet_address_space
+  vnet_cidr               = var.vnet_cidr
 }

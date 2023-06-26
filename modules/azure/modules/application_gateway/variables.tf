@@ -13,7 +13,17 @@ variable "resource_group_location" {
   description = "The Azure location where to create the resources."
 }
 
-variable "vnet_cidr" {
+variable "public_subnet_id" {
   type        = string
-  description = "The IPv4 CIDR address for the virtual network."
+  description = ""
+}
+
+variable "container_app_environment_static_ip_address" {
+  type        = string
+  description = ""
+}
+
+variable "container_app_fqdn" {
+  type        = string
+  description = ""
 }
