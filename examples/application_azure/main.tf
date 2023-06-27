@@ -9,4 +9,5 @@ module "terraform_multicloud_azure" {
   location                = var.location
   static_website_settings = var.static_website_settings
   vnet_cidr               = var.vnet_cidr
+  containers              = var.containers
 }

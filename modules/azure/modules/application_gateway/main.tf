@@ -1,10 +1,6 @@
 locals {
   backend_address_pool_name      = "${var.solution_name}-beap"
-  frontend_port_name             = "${var.solution_name}-feport"
   frontend_ip_configuration_name = "${var.solution_name}-feip"
-  http_setting_name              = "${var.solution_name}-be-htst"
-  listener_name                  = "${var.solution_name}-httplstn"
-  request_routing_rule_name      = "${var.solution_name}-rqrt"
   redirect_configuration_name    = "${var.solution_name}-rdrcfg"
 }
 
@@ -31,9 +27,13 @@ resource "azurerm_application_gateway" "app_gateway" {
     subnet_id = var.public_subnet_id
   }
 
-  frontend_port {
-    name = local.frontend_port_name
-    port = 80
+  dynamic "frontend_port" {
+    for_each = var.container_apps
+
+    content {
+      name = "${var.solution_name}-${frontend_port.value.name}-feport"
+      port = frontend_port.value.port
+    }
   }
 
   frontend_ip_configuration {
@@ -43,46 +43,63 @@ resource "azurerm_application_gateway" "app_gateway" {
 
   backend_address_pool {
     name         = local.backend_address_pool_name
-    ip_addresses = [var.container_app_environment_static_ip_address] #[azurerm_container_app_environment.main.static_ip_address]
+    ip_addresses = [var.container_app_environment_static_ip_address]
   }
 
-  backend_http_settings {
-    name                  = local.http_setting_name
-    cookie_based_affinity = "Disabled"
-    path                  = "/"
-    port                  = 80
-    protocol              = "Http"
-    request_timeout       = 60
-    host_name             = var.container_app_fqdn #azurerm_container_app.main.latest_revision_fqdn
-    probe_name            = "probe"
-  }
+  dynamic "backend_http_settings" {
+    for_each = var.container_apps
 
-  probe {
-    host                = var.container_app_fqdn #azurerm_container_app.main.latest_revision_fqdn
-    name                = "probe"
-    protocol            = "Http"
-    path                = "/"
-    interval            = 30
-    timeout             = 30
-    unhealthy_threshold = 3
-
-    match {
-      status_code = ["200"]
+    content {
+      name                  = "${var.solution_name}-${backend_http_settings.value.name}-be-htst"
+      cookie_based_affinity = "Disabled"
+      path                  = "/"
+      port                  = backend_http_settings.value.port
+      protocol              = "Http"
+      request_timeout       = 60
+      host_name             = backend_http_settings.value.fqdn
+      probe_name            = "${backend_http_settings.value.name}-probe"
     }
   }
 
-  http_listener {
-    name                           = local.listener_name
-    frontend_ip_configuration_name = local.frontend_ip_configuration_name
-    frontend_port_name             = local.frontend_port_name
-    protocol                       = "Http"
+  dynamic "probe" {
+    for_each = var.container_apps
+
+    content {
+      host                = probe.value.fqdn
+      name                = "${probe.value.name}-probe"
+      protocol            = "Http"
+      path                = "/"
+      interval            = 30
+      timeout             = 30
+      unhealthy_threshold = 3
+
+      match {
+        status_code = ["200"]
+      }
+    }
   }
 
-  request_routing_rule {
-    name                       = local.request_routing_rule_name
-    rule_type                  = "Basic"
-    http_listener_name         = local.listener_name
-    backend_address_pool_name  = local.backend_address_pool_name
-    backend_http_settings_name = local.http_setting_name
+  dynamic "http_listener" {
+    for_each = var.container_apps
+
+    content {
+      name                           = "${var.solution_name}-${http_listener.value.name}-httplstn"
+      frontend_ip_configuration_name = local.frontend_ip_configuration_name
+      frontend_port_name             = "${var.solution_name}-${http_listener.value.name}-feport"
+      protocol                       = "Http"
+    }
   }
+
+  dynamic "request_routing_rule" {
+    for_each = var.container_apps
+
+    content {
+      name                       = "${var.solution_name}-${request_routing_rule.value.name}-rqrt"
+      rule_type                  = "Basic"
+      http_listener_name         = "${var.solution_name}-${request_routing_rule.value.name}-httplstn"
+      backend_address_pool_name  = local.backend_address_pool_name
+      backend_http_settings_name = "${var.solution_name}-${request_routing_rule.value.name}-be-htst"
+    }
+  }
+
 }

@@ -9,3 +9,7 @@ output "cdn_endpoint" {
 output "application_gateway_endpoint" {
   value = module.terraform_multicloud_azure.application_gateway_endpoint
 }
+
+output "container_apps" {
+  value = module.terraform_multicloud_azure.container_apps
+}

@@ -15,7 +15,7 @@ variable "resource_group_location" {
 
 variable "public_subnet_id" {
   type        = string
-  description = ""
+  description = "Private subnet ID to host the application gateway."
 }
 
 variable "container_app_environment_static_ip_address" {
@@ -23,7 +23,12 @@ variable "container_app_environment_static_ip_address" {
   description = ""
 }
 
-variable "container_app_fqdn" {
-  type        = string
-  description = ""
+variable "container_apps" {
+  type = list(object({
+    name = string
+    fqdn = string
+    port = number
+  }))
+  description = "Container apps deployed."
+  default     = []
 }

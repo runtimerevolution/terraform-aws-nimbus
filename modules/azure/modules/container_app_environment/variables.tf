@@ -17,3 +17,15 @@ variable "private_subnet_id" {
   type        = string
   description = "Private subnet ID to host the environment."
 }
+
+variable "containers" {
+  type = list(object({
+    name   = string
+    image  = string
+    cpu    = number
+    memory = string
+    port   = number
+  }))
+  description = "Container instances to be deployed."
+  default     = []
+}

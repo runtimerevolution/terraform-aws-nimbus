@@ -36,3 +36,15 @@ variable "vnet_cidr" {
   description = "The IPv4 CIDR address for the virtual network."
   default     = "10.0.0.0/16"
 }
+
+variable "containers" {
+  type = list(object({
+    name   = string
+    image  = string
+    cpu    = number
+    memory = string
+    port   = number
+  }))
+  description = "Container instances to be deployed."
+  default     = []
+}
