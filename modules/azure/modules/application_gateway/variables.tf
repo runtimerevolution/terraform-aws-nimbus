@@ -20,7 +20,7 @@ variable "public_subnet_id" {
 
 variable "container_app_environment_static_ip_address" {
   type        = string
-  description = ""
+  description = "List of IP Addresses to include in the Backend Address Pool."
 }
 
 variable "container_apps" {

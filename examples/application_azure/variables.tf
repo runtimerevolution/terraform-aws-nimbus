@@ -25,6 +25,7 @@ variable "static_website_settings" {
     index_document     = string
     error_404_document = string
   })
+  description = "Static website settings."
   default = {
     index_document     = "index.html"
     error_404_document = "error.html"

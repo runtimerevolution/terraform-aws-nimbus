@@ -13,7 +13,6 @@ variable "resource_group_location" {
   description = "The Azure location where to create the resources."
 }
 
-
 variable "storage_account_kind" {
   type        = string
   description = "Defines the Kind of account."
@@ -49,4 +48,5 @@ variable "static_website_settings" {
     index_document     = string
     error_404_document = string
   })
+  description = "Static website settings."
 }

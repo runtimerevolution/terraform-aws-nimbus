@@ -10,6 +10,6 @@ output "application_gateway_endpoint" {
   value = module.application_gateway.application_gateway_public_ip_address
 }
 
-output "container_apps" {
-  value = module.container_app_environment.container_apps
+output "container_apps_endpoints" {
+  value = [for c in module.container_app_environment.container_apps : "${c.fqdn}:${c.port}"]
 }
