@@ -69,9 +69,12 @@ module "application_gateway" {
 module "cdn" {
   source = "./modules/azure_cdn"
 
-  solution_name            = var.solution_name
-  resource_group_name      = azurerm_resource_group.resource_group.name
-  resource_group_location  = azurerm_resource_group.resource_group.location
-  storage_account_web_host = module.static_website.storage_account_web_host
+  solution_name                         = var.solution_name
+  resource_group_name                   = azurerm_resource_group.resource_group.name
+  resource_group_location               = azurerm_resource_group.resource_group.location
+  storage_account_web_host              = module.static_website.storage_account_web_host
+  application_gateway_public_ip_address = module.application_gateway.application_gateway_public_ip_address
+
+  depends_on = [ module.application_gateway ]
 }
 

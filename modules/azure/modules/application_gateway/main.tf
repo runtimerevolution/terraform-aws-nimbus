@@ -23,7 +23,7 @@ resource "azurerm_application_gateway" "app_gateway" {
   }
 
   gateway_ip_configuration {
-    name      = "my-gateway-ip-configuration"
+    name      = "${var.solution_name}-gateway-ip-config"
     subnet_id = var.public_subnet_id
   }
 
@@ -31,7 +31,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.container_apps
 
     content {
-      name = "${var.solution_name}-${frontend_port.value.name}-feport"
+      name = "${frontend_port.value.name}-feport"
       port = frontend_port.value.port
     }
   }
@@ -50,7 +50,7 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.container_apps
 
     content {
-      name                  = "${var.solution_name}-${backend_http_settings.value.name}-be-htst"
+      name                  = "${backend_http_settings.value.name}-be-htst"
       cookie_based_affinity = "Disabled"
       path                  = "/"
       port                  = backend_http_settings.value.port
@@ -83,9 +83,9 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.container_apps
 
     content {
-      name                           = "${var.solution_name}-${http_listener.value.name}-httplstn"
+      name                           = "${http_listener.value.name}-httplstn"
       frontend_ip_configuration_name = local.frontend_ip_configuration_name
-      frontend_port_name             = "${var.solution_name}-${http_listener.value.name}-feport"
+      frontend_port_name             = "${http_listener.value.name}-feport"
       protocol                       = "Http"
     }
   }
@@ -94,12 +94,11 @@ resource "azurerm_application_gateway" "app_gateway" {
     for_each = var.container_apps
 
     content {
-      name                       = "${var.solution_name}-${request_routing_rule.value.name}-rqrt"
+      name                       = "${request_routing_rule.value.name}-rqrt"
       rule_type                  = "Basic"
-      http_listener_name         = "${var.solution_name}-${request_routing_rule.value.name}-httplstn"
+      http_listener_name         = "${request_routing_rule.value.name}-httplstn"
       backend_address_pool_name  = local.backend_address_pool_name
-      backend_http_settings_name = "${var.solution_name}-${request_routing_rule.value.name}-be-htst"
+      backend_http_settings_name = "${request_routing_rule.value.name}-be-htst"
     }
   }
-
 }

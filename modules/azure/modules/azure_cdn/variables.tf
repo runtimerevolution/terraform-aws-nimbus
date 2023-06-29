@@ -15,5 +15,10 @@ variable "resource_group_location" {
 
 variable "storage_account_web_host" {
   type        = string
-  description = "The host header the CDN will send along with content requests to origins."
+  description = "Host name for the Storage Account hosting the static website."
+}
+
+variable "application_gateway_public_ip_address" {
+  type = string
+  description = "IP address of the application gateway."
 }
