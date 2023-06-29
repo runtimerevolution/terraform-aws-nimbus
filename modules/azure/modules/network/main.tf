@@ -1,6 +1,12 @@
 # -----------------------------------------------------------------------------
 # Virtual network
 # -----------------------------------------------------------------------------
+resource "azurerm_network_watcher" "network_watcher" {
+  name                = "${var.solution_name}-network-watcher"
+  location            = var.resource_group_location
+  resource_group_name = var.resource_group_name
+}
+
 resource "azurerm_virtual_network" "vnet" {
   name                = "${var.solution_name}-vnet"
   address_space       = [var.vnet_cidr]
