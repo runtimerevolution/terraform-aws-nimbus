@@ -19,6 +19,11 @@ variable "storage_account_web_host" {
 }
 
 variable "application_gateway_public_ip_address" {
-  type = string
+  type        = string
   description = "IP address of the application gateway."
+}
+
+variable "cdn_application_patterns_to_match" {
+  type        = list(string)
+  description = "The path patterns to redirect to the application gateway."
 }

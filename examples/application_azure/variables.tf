@@ -20,6 +20,18 @@ variable "location" {
   default     = "eastus"
 }
 
+variable "enable_static_website" {
+  type        = bool
+  description = "Enables/disables serving a static website hosted in a Storage Account."
+  default     = false
+}
+
+variable "enable_application" {
+  type        = bool
+  description = "Enables/disables serving application(s) using Container Apps to host containers."
+  default     = false
+}
+
 variable "static_website_settings" {
   type = object({
     index_document     = string
@@ -30,6 +42,12 @@ variable "static_website_settings" {
     index_document     = "index.html"
     error_404_document = "error.html"
   }
+}
+
+variable "cdn_application_patterns_to_match" {
+  type        = list(string)
+  description = "The path patterns to redirect to the application gateway."
+  default     = ["/*"]
 }
 
 variable "vnet_cidr" {

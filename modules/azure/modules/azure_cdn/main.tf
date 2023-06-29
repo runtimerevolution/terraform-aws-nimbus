@@ -1,17 +1,17 @@
 locals {
-  static_website_origin = {
+  static_website_origin = var.storage_account_web_host != null ? {
     name                = "sa"
     host_name           = var.storage_account_web_host
     forwarding_protocol = "HttpsOnly"
     patterns_to_match   = ["/*"]
-  }
+  } : null
 
-  application_gateway_origin = {
+  application_gateway_origin = var.application_gateway_public_ip_address != null ? {
     name                = "ag"
     host_name           = var.application_gateway_public_ip_address
     forwarding_protocol = "HttpOnly"
-    patterns_to_match   = ["/app/*"]
-  }
+    patterns_to_match   = var.cdn_application_patterns_to_match
+  } : null
 
   origins = [local.static_website_origin, local.application_gateway_origin]
 }
@@ -29,7 +29,7 @@ resource "azurerm_cdn_frontdoor_endpoint" "endpoint" {
 
 
 module "route" {
-  for_each = { for o in local.origins : o.name => o }
+  for_each = { for o in local.origins : o.name => o if o != null }
 
   source = "../azure_cdn_route"
 
