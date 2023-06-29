@@ -3,6 +3,16 @@ variable "solution_name" {
   description = "Name of the solution."
 }
 
+variable "enable_static_website" {
+  type        = bool
+  description = "Enables/disables serving a static website hosted in a Storage Account."
+}
+
+variable "enable_application" {
+  type        = bool
+  description = "Enables/disables serving application(s) using Container Apps to host containers."
+}
+
 variable "resource_group_name" {
   type        = string
   description = "The name of the resource group in which to host the CDN."

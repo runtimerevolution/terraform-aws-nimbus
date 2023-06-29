@@ -78,6 +78,8 @@ module "cdn" {
   source = "./modules/azure_cdn"
 
   solution_name                         = var.solution_name
+  enable_static_website                 = var.enable_static_website
+  enable_application                    = var.enable_application
   resource_group_name                   = azurerm_resource_group.resource_group.name
   resource_group_location               = azurerm_resource_group.resource_group.location
   storage_account_web_host              = var.enable_static_website ? module.static_website[0].storage_account_web_host : null
