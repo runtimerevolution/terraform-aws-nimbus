@@ -1,7 +1,6 @@
 locals {
   backend_address_pool_name      = "${var.solution_name}-beap"
   frontend_ip_configuration_name = "${var.solution_name}-feip"
-  redirect_configuration_name    = "${var.solution_name}-rdrcfg"
 }
 
 resource "azurerm_public_ip" "app_gateway" {
