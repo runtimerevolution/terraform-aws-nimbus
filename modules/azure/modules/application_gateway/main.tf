@@ -7,7 +7,8 @@ resource "azurerm_public_ip" "app_gateway" {
   name                = "${var.solution_name}-app-gateway-pip"
   resource_group_name = var.resource_group_name
   location            = var.resource_group_location
-  allocation_method   = "Dynamic"
+  allocation_method   = "Static"
+  sku                 = "Standard"
 }
 
 resource "azurerm_application_gateway" "app_gateway" {
@@ -16,9 +17,13 @@ resource "azurerm_application_gateway" "app_gateway" {
   location            = var.resource_group_location
 
   sku {
-    name     = "Standard_Small"
-    tier     = "Standard"
-    capacity = 2
+    name = "Standard_v2"
+    tier = "Standard_v2"
+  }
+
+  autoscale_configuration {
+    min_capacity = 0
+    max_capacity = 10
   }
 
   gateway_ip_configuration {
@@ -98,6 +103,7 @@ resource "azurerm_application_gateway" "app_gateway" {
       http_listener_name         = "${request_routing_rule.value.name}-httplstn"
       backend_address_pool_name  = local.backend_address_pool_name
       backend_http_settings_name = "${request_routing_rule.value.name}-be-htst"
+      priority                   = 1
     }
   }
 }

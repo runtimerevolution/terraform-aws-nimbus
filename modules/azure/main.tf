@@ -88,4 +88,3 @@ module "cdn" {
 
   depends_on = [module.application_gateway]
 }
-
