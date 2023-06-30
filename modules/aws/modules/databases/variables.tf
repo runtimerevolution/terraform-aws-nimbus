@@ -50,12 +50,9 @@ variable "databases" {
     })
   )
   description = "Databases instances to deploy."
-  default     = []
 }
-
 
 variable "enable_secrets_manager" {
   type        = string
   description = "Specifies if secrets manager should be used to store sensible data."
-  default     = "false"
 }
