@@ -16,3 +16,20 @@ resource "aws_lb_listener" "listener" {
     type             = "forward"
   }
 }
+
+resource "aws_lb_listener_rule" "static" {
+  count = var.path_pattern != null ? 1 : 0
+
+  listener_arn = aws_lb_listener.listener.arn
+
+  action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.target_group.id
+  }
+
+  condition {
+    path_pattern {
+      values = [var.path_pattern]
+    }
+  }
+}

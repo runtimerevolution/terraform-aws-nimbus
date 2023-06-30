@@ -8,6 +8,7 @@ module "lb_listener" {
   vpc_id           = var.vpc_id
   port             = var.port
   load_balancer_id = var.load_balancer_id
+  path_pattern     = var.path_pattern
 }
 
 resource "aws_ecs_task_definition" "task_definition" {

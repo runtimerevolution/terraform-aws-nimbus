@@ -14,19 +14,16 @@ module "route53" {
 }
 
 # -----------------------------------------------------------------------------
-# Static website deployment using AWS Cloudfront
+# Static website
 # -----------------------------------------------------------------------------
-module "static_website" {
-  source = "./modules/cloudfront"
+module "static_website_bucket" {
+  count = var.enable_static_website ? 1 : 0
 
-  solution_name                  = var.solution_name
-  enable_custom_domain           = var.enable_custom_domain
-  domain                         = var.domain
-  cloudfront_default_root_object = var.cloudfront_default_root_object
-  cloudfront_origin_id           = var.cloudfront_origin_id
-  cloudfront_price_class         = var.cloudfront_price_class
-  acm_certificate_arn            = var.enable_custom_domain ? module.route53[0].acm_certificate_arn : null
-  route53_zone_id                = var.enable_custom_domain ? module.route53[0].zone_id : null
+  source = "./modules/s3_bucket"
+
+  bucket_name        = "${var.solution_name}-static-website"
+  bucket_acl         = "private"
+  bucket_policy_json = data.aws_iam_policy_document.static_website_bucket.json
 }
 
 # -----------------------------------------------------------------------------
@@ -47,6 +44,8 @@ module "network" {
 # Setup a load balancer
 # -----------------------------------------------------------------------------
 module "load_balancer" {
+  count = var.enable_ecs ? 1 : 0
+
   source = "./modules/load_balancer"
 
   solution_name        = var.solution_name
@@ -61,13 +60,13 @@ module "load_balancer" {
 # ECS cluster and services
 # -----------------------------------------------------------------------------
 module "ecs" {
-  count = length(var.containers) > 0 ? 1 : 0
+  count = var.enable_ecs ? 1 : 0
 
   source = "./modules/ecs"
 
   solution_name                 = var.solution_name
   vpc_id                        = module.network.vpc_id
-  load_balancer_id              = module.load_balancer.load_balancer_id
+  load_balancer_id              = module.load_balancer[0].load_balancer_id
   security_group_id             = module.network.security_group_id
   subnets_ids                   = module.network.private_subnets_ids
   containers                    = var.containers
@@ -76,6 +75,28 @@ module "ecs" {
   ec2_health_check_grace_period = var.ec2_health_check_grace_period
   ec2_health_check_type         = var.ec2_health_check_type
   ami_id                        = var.ec2_ami_id
+}
+
+# -----------------------------------------------------------------------------
+# Cloudfront
+# -----------------------------------------------------------------------------
+module "cloudfront" {
+  source = "./modules/cloudfront"
+
+  solution_name                 = var.solution_name
+  enable_custom_domain          = var.enable_custom_domain
+  domain                        = var.domain
+  static_website_url            = var.enable_static_website ? module.static_website_bucket[0].bucket.bucket_regional_domain_name : null
+  load_balancer_url             = var.enable_ecs ? module.load_balancer[0].load_balancer_dns_name : null
+  static_website_root_object    = var.cloudfront_static_website_root_object
+  custom_origin_http_port       = var.cloudfront_custom_origin_http_port
+  custom_origin_https_port      = var.cloudfront_custom_origin_https_port
+  custom_origin_protocol_policy = var.cloudfront_custom_origin_protocol_policy
+  custom_origin_ssl_protocols   = var.cloudfront_custom_origin_ssl_protocols
+  path_patterns                 = var.cloudfront_path_patterns
+  price_class                   = var.cloudfront_price_class
+  acm_certificate_arn           = var.enable_custom_domain ? module.route53[0].acm_certificate_arn : null
+  route53_zone_id               = var.enable_custom_domain ? module.route53[0].zone_id : null
 }
 
 # -----------------------------------------------------------------------------

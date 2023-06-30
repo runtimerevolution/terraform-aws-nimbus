@@ -17,3 +17,8 @@ variable "port" {
   type        = number
   description = "Port on which the load balancer is listening."
 }
+
+variable "path_pattern" {
+  type        = string
+  description = "Path pattern to match and forward the request to the listener target group"
+}
