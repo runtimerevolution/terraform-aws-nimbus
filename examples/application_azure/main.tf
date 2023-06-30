@@ -13,4 +13,5 @@ module "terraform_multicloud_azure" {
   cdn_application_patterns_to_match = var.cdn_application_patterns_to_match
   vnet_cidr                         = var.vnet_cidr
   containers                        = var.containers
+  database_servers                  = var.database_servers
 }
