@@ -31,6 +31,8 @@ resource "azurerm_container_app" "app" {
       cpu    = each.value.cpu
       memory = each.value.memory
     }
+    min_replicas = each.value.min_replicas
+    max_replicas = each.value.max_replicas
   }
 
   ingress {

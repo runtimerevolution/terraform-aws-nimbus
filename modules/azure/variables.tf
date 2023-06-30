@@ -58,11 +58,13 @@ variable "vnet_cidr" {
 
 variable "containers" {
   type = list(object({
-    name   = string
-    image  = string
-    cpu    = number
-    memory = string
-    port   = number
+    name         = string
+    image        = string
+    cpu          = number
+    memory       = string
+    port         = number
+    min_replicas = optional(number)
+    max_replicas = optional(number)
   }))
   description = "Container instances to be deployed."
   default     = []
