@@ -1,7 +1,7 @@
 data "aws_iam_policy_document" "logging_bucket" {
   statement {
     actions   = ["s3:*"]
-    resources = ["${module.bucket_cloudfront.bucket.arn}/*"]
+    resources = ["${module.bucket_cloudfront.bucket_arn}/*"]
 
     principals {
       type        = "AWS"

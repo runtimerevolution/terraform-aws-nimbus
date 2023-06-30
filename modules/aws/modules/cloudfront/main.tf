@@ -90,7 +90,7 @@ resource "aws_cloudfront_distribution" "cloudfront_distribution" {
 
   logging_config {
     include_cookies = false
-    bucket          = module.bucket_cloudfront.bucket.bucket_domain_name
+    bucket          = module.bucket_cloudfront.bucket_domain_name
     prefix          = "logs/"
   }
 
