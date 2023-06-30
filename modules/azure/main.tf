@@ -88,3 +88,18 @@ module "cdn" {
 
   depends_on = [module.application_gateway]
 }
+
+
+# -----------------------------------------------------------------------------
+# Databases
+# -----------------------------------------------------------------------------
+module "databases" {
+  # count = length(var.databases) > 0 ? 1 : 0
+
+  source = "./modules/databases"
+
+  solution_name           = var.solution_name
+  resource_group_name     = azurerm_resource_group.resource_group.name
+  resource_group_location = azurerm_resource_group.resource_group.location
+
+}
