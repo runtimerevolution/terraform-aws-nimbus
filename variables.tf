@@ -148,7 +148,7 @@ variable "ecs_launch_type" {
 
 variable "ec2_instance_type" {
   type        = string
-  description = "The size of the EC2 instance to launch."
+  description = "The size of the EC2 instance to launch. Information about the diferent instances types can be found here: https://aws.amazon.com/ec2/instance-types/."
   default     = "t3.micro"
 }
 
@@ -219,12 +219,12 @@ variable "bastion_ami_id" {
 
 variable "bastion_instance_type" {
   type        = string
-  description = "The size of the EC2 instance to launch for hosting the bastion host."
+  description = "The size of the EC2 instance to launch for hosting the bastion host. Information about the diferent instances types can be found here: https://aws.amazon.com/ec2/instance-types/."
   default     = "t3.micro"
 }
 
 variable "enable_secrets_manager" {
-  type        = string
+  type        = bool
   description = "Specifies if secrets manager should be used to store sensible data."
-  default     = "false"
+  default     = false
 }
