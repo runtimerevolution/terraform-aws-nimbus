@@ -47,7 +47,7 @@ variable "enable_ecs" {
 variable "cloudfront_static_website_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
-  default     = "website/index.html"
+  default     = "index.html"
 }
 
 variable "cloudfront_custom_origin_http_port" {
@@ -83,12 +83,6 @@ variable "cloudfront_path_patterns" {
   type        = list(string)
   description = "Path patterns that specifies which requests to apply a cache behavior."
   default     = []
-}
-
-variable "cloudfront_origin_id" {
-  type        = string
-  description = "Origin id for the Cloudfront distribution."
-  default     = "s3-origin"
 }
 
 variable "cloudfront_price_class" {
