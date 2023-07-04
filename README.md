@@ -7,7 +7,7 @@ Terraform module which implements a three-tier architeture on AWS
 ## Usage
 ```hcl
 module "terraform_aws_nimbus" {
-  source = "cld-vasconcelos/multicloud/aws"
+  source = "runtimerevolution/nimbus/aws"
 
   solution_name = "kyoto"
 
