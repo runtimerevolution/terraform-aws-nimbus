@@ -1,8 +1,43 @@
 # Terraform AWS Nimbus
 
-Terraform module which implements a three-tier architeture on AWS
+Terraform module which implements a three-tier architeture on AWS. The implementation contains the following stack:
+
+- Virtual network containing public and private subnets
+- Static website hosted in a S3 bucket
+- Containerized application running on ECS
+- CDN serving the static website and/or the containerized application
+- Relational database instances via RDS 
+- DNS via Route 53
 
 ![terraform_aws_nimbus](https://github.com/runtimerevolution/terraform-aws-nimbus/assets/119345743/1ac5933d-96e1-4173-8808-ba17bf10d7b0)
+
+## Local development
+To use this module locally for development purposes first clone this repository. Then, in the root of the project, create a `.tfvars` file, which will serve as the variables file, and set the input variables.
+
+To initialize the solution run 
+
+```sh
+  terraform init
+  ```
+
+To view and apply the infrastructure changes run
+
+```sh
+  terraform aply -var-file="{name of the variables file}"
+  ```
+
+
+To just view the infrastructure changes run
+
+```sh
+  terraform plan -var-file="{name of the variables file}"
+  ```
+
+To destroy the infrastructure
+
+```sh
+  terraform destroy -var-file="{name of the variables file}"
+  ```
 
 ## Usage
 ```hcl
