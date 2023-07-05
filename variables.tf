@@ -47,7 +47,7 @@ variable "enable_ecs" {
 variable "cloudfront_static_website_root_object" {
   type        = string
   description = "Object CloudFront must return to return when an end user requests the root URL."
-  default     = "website/index.html"
+  default     = "index.html"
 }
 
 variable "cloudfront_custom_origin_http_port" {
@@ -83,12 +83,6 @@ variable "cloudfront_path_patterns" {
   type        = list(string)
   description = "Path patterns that specifies which requests to apply a cache behavior."
   default     = []
-}
-
-variable "cloudfront_origin_id" {
-  type        = string
-  description = "Origin id for the Cloudfront distribution."
-  default     = "s3-origin"
 }
 
 variable "cloudfront_price_class" {
@@ -154,7 +148,7 @@ variable "ecs_launch_type" {
 
 variable "ec2_instance_type" {
   type        = string
-  description = "The size of the EC2 instance to launch."
+  description = "The size of the EC2 instance to launch. Information about the diferent instances types can be found here: https://aws.amazon.com/ec2/instance-types/."
   default     = "t3.micro"
 }
 
@@ -225,12 +219,12 @@ variable "bastion_ami_id" {
 
 variable "bastion_instance_type" {
   type        = string
-  description = "The size of the EC2 instance to launch for hosting the bastion host."
+  description = "The size of the EC2 instance to launch for hosting the bastion host. Information about the diferent instances types can be found here: https://aws.amazon.com/ec2/instance-types/."
   default     = "t3.micro"
 }
 
 variable "enable_secrets_manager" {
-  type        = string
+  type        = bool
   description = "Specifies if secrets manager should be used to store sensible data."
-  default     = "false"
+  default     = false
 }
